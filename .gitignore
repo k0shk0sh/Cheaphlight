@@ -6,3 +6,4 @@
 *.iml
 /captures
 /app/google-services.json
+/request.json
