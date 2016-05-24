@@ -33,14 +33,6 @@ public class LoginView extends BaseActivity {
         super.onCreate(savedInstanceState);
     }
 
-//    @OnClick(R.id.login) void onClick() {
-//        startActivityForResult(
-//                AuthUI.getInstance().createSignInIntentBuilder()
-//                        .setTheme(R.style.LoginTheme)
-//                        .setProviders(AuthUI.FACEBOOK_PROVIDER, AuthUI.GOOGLE_PROVIDER)
-//                        .build(), RC_SIGN_IN);
-//    }
-
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Logger.e(requestCode, resultCode, data);

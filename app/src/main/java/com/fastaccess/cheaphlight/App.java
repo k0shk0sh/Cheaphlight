@@ -2,6 +2,7 @@ package com.fastaccess.cheaphlight;
 
 import android.app.Application;
 
+import com.facebook.FacebookSdk;
 import com.fastaccess.cheaphlight.helper.PrefHelper;
 import com.fastaccess.cheaphlight.helper.TypeFaceHelper;
 import com.fastaccess.cheaphlight.ui.modules.main.view.MainView;
@@ -30,6 +31,7 @@ public class App extends Application {
         CustomActivityOnCrash.setRestartActivityClass(MainView.class);
         CustomActivityOnCrash.setShowErrorDetails(DEBUG);
         CustomActivityOnCrash.install(this);
+        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 
     public static App getInstance() {

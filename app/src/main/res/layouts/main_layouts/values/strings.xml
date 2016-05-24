@@ -4,4 +4,5 @@
     <string name="login_signup">Login/Signup</string>
     <string name="sign_in_with_facebook">Sign in with Facebook</string>
     <string name="sing_in_with_google">Sing In With Google</string>
+    <string name="skip">Skip</string>
 </resources>
