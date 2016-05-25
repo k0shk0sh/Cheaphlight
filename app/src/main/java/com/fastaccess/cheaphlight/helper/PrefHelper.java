@@ -6,6 +6,10 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.fastaccess.cheaphlight.App;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,7 +17,7 @@ import java.util.Map;
  */
 public class PrefHelper {
 
-    protected static Context context;
+    private static Context context;
 
     public static void init(@NonNull Context context) {
         PrefHelper.context = context.getApplicationContext();
@@ -43,41 +47,56 @@ public class PrefHelper {
         } else if (value instanceof Float) {
             edit.putFloat(key, (float) value);
         } else {
-            throw new IllegalArgumentException("Value must be in one of these {String, int, float, long, boolean} given value is{ " + value
-                    .getClass().getSimpleName() + "}");
+            edit.putString(key, App.gson().toJson(value));
         }
         edit.apply();
     }
 
-    @Nullable public static String getString(String key) {
+    @Nullable public static <T> T getJsonObject(@NonNull String key, @NonNull Class<T> type) {
+        String value = getString(key);
+        if (!InputHelper.isEmpty(value)) {
+            return App.gson().fromJson(value, type);
+        }
+        return null;
+    }
+
+    @Nullable public static <T> List<T> getJsonArray(@NonNull String key, final @NonNull Class<T[]> type) {
+        String value = getString(key);
+        if (!InputHelper.isEmpty(value)) {
+            return Arrays.asList(App.gson().fromJson(value, type));
+        }
+        return null;
+    }
+
+    @Nullable public static String getString(@NonNull String key) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(key, null);
     }
 
-    public static boolean getBoolean(String key) {
+    public static boolean getBoolean(@NonNull String key) {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(key, false);
     }
 
-    public static int getInt(String key) {
+    public static int getInt(@NonNull String key) {
         return PreferenceManager.getDefaultSharedPreferences(context).getInt(key, 0);
     }
 
-    public static long getLong(String key) {
+    public static long getLong(@NonNull String key) {
         return PreferenceManager.getDefaultSharedPreferences(context).getLong(key, 0);
     }
 
-    public static float getFloat(String key) {
+    public static float getFloat(@NonNull String key) {
         return PreferenceManager.getDefaultSharedPreferences(context).getFloat(key, 0);
     }
 
-    public static void clearKey(String key) {
+    public static void clearKey(@NonNull String key) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().remove(key).apply();
     }
 
-    public static boolean isExist(String key) {
+    public static boolean isExist(@NonNull String key) {
         return PreferenceManager.getDefaultSharedPreferences(context).contains(key);
     }
 
-    public static void clearPrefs(Context context) {
+    public static void clearPrefs() {
         PreferenceManager.getDefaultSharedPreferences(context).edit().clear().apply();
     }
 

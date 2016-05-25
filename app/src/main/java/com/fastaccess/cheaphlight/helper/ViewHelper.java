@@ -31,10 +31,6 @@ import java.util.Arrays;
  */
 public class ViewHelper {
 
-    public static boolean isTablet(Resources resources) {
-        return (resources.getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
-    }
-
     public static int getAccentColor(Context context) {
         TypedValue typedValue = new TypedValue();
         TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorAccent});
@@ -127,20 +123,22 @@ public class ViewHelper {
         return Color.HSVToColor(hsv);
     }
 
-    public static boolean isTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration
-                .SCREENLAYOUT_SIZE_LARGE;
+    public static boolean isTablet(Resources resources) {
+        return (resources.getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
-    public static void setMenuCount(@NonNull NavigationView navigationView, @IdRes int itemId, int count) {
-        Logger.e(count);
+    public static boolean isTablet(Context context) {
+        return isTablet(context.getResources());
+    }
+
+    public static void setMenuCount(@NonNull NavigationView navigationView, @IdRes int itemId, @IdRes int txtId, int count) {
         if (navigationView.getMenu().findItem(itemId).getActionView() != null) {
             if (navigationView.getMenu().findItem(itemId).getActionView() instanceof TextView) {
                 setTextViewMenuCounter(navigationView, itemId, count);
                 return;
             }
             LinearLayout view = (LinearLayout) navigationView.getMenu().findItem(itemId).getActionView();
-//            ((TextView) view.findViewById(R.id.counter)).setText(String.format("%d", count));
+            ((TextView) view.findViewById(txtId)).setText(String.format("%d", count));
         }
     }
 
