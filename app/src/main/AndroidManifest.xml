@@ -23,7 +23,8 @@
         </activity>
         <activity
             android:name=".ui.modules.security.view.LoginView"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/LoginTheme"/>
 
         <service
             android:name=".notification.push.view.PushNotification">

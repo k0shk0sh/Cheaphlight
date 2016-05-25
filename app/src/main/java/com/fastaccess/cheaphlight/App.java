@@ -6,6 +6,10 @@ import com.facebook.FacebookSdk;
 import com.fastaccess.cheaphlight.helper.PrefHelper;
 import com.fastaccess.cheaphlight.helper.TypeFaceHelper;
 import com.fastaccess.cheaphlight.ui.modules.main.view.MainView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.lang.reflect.Modifier;
 
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 
@@ -18,10 +22,6 @@ import static com.fastaccess.cheaphlight.BuildConfig.DEBUG;
 public class App extends Application {
 
     private static App instance;
-
-    static {
-//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-    }
 
     @Override public void onCreate() {
         super.onCreate();
@@ -36,5 +36,12 @@ public class App extends Application {
 
     public static App getInstance() {
         return instance;
+    }
+
+    public static Gson gson() {
+        return new GsonBuilder()
+                .setPrettyPrinting()
+                .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
+                .create();
     }
 }

@@ -5,4 +5,7 @@
     <string name="sign_in_with_facebook">Sign in with Facebook</string>
     <string name="sing_in_with_google">Sing In With Google</string>
     <string name="skip">Skip</string>
+    <string name="linear_layout_manager" translatable="false">com.fastaccess.cheaphlight.ui.widgets.recyclerview.layout_manager.LinearManager</string>
+    <string name="grid_layout_manager" translatable="false">com.fastaccess.cheaphlight.ui.widgets.recyclerview.layout_manager.GridManager</string>
+    <string name="staggered_layout_manager" translatable="false">com.fastaccess.cheaphlight.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
 </resources>

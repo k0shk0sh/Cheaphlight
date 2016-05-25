@@ -4,6 +4,7 @@
 
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/primary_dark</item>
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
@@ -34,8 +35,8 @@
     </style>
 
     <style name="FacebookButton">
-        <item name="android:drawableStart">@drawable/com_facebook_button_icon_white</item>
-        <item name="android:background">@color/com_facebook_button_background_color</item>
+        <item name="android:drawableStart">@drawable/ic_facebook_icon</item>
+        <item name="android:background">@drawable/com_facebook_button_background</item>
         <item name="android:layout_margin">10dp</item>
         <item name="android:layout_width">250dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -44,7 +45,9 @@
     </style>
 
     <style name="GoogleButton">
-        <item name="android:background">@drawable/common_google_signin_btn_text_light_normal</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:drawableStart">@drawable/ic_google_icon</item>
+        <item name="android:background">@drawable/google_button</item>
         <item name="android:layout_margin">10dp</item>
         <item name="android:layout_width">250dp</item>
         <item name="android:layout_height">wrap_content</item>

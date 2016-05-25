@@ -9,7 +9,6 @@
     app:statusBarBackground="@color/transparent">
 
     <com.fastaccess.cheaphlight.ui.widgets.FontTextView
-        android:id="@+id/textView"
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,21 +30,23 @@
         android:orientation="vertical">
 
         <com.fastaccess.cheaphlight.ui.widgets.FontButton
+            android:id="@+id/googleLogin"
             style="@style/GoogleButton"
             android:text="@string/sing_in_with_google"/>
 
         <com.fastaccess.cheaphlight.ui.widgets.FontButton
+            android:id="@+id/facebookLogin"
             style="@style/FacebookButton"
             android:text="@string/sign_in_with_facebook"/>
 
         <com.google.android.gms.common.SignInButton
-            android:id="@+id/googleLogin"
+            android:id="@+id/googleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"/>
 
         <com.facebook.login.widget.LoginButton
-            android:id="@+id/facebookLogin"
+            android:id="@+id/facebookButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"/>

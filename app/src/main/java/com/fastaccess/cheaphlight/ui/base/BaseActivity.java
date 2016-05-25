@@ -12,11 +12,15 @@ import android.view.View;
 import com.fastaccess.cheaphlight.BuildConfig;
 import com.fastaccess.cheaphlight.R;
 import com.fastaccess.cheaphlight.helper.AppHelper;
+import com.fastaccess.cheaphlight.helper.PrefHelper;
+import com.fastaccess.cheaphlight.helper.ViewHelper;
 import com.fastaccess.cheaphlight.ui.modules.security.view.LoginView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.ButterKnife;
 import icepick.Icepick;
+
+import static com.fastaccess.cheaphlight.helper.PrefConstance.SKIPPED_LOGIN;
 
 /**
  * Created by Kosh on 24 May 2016, 8:48 PM
@@ -24,6 +28,9 @@ import icepick.Icepick;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
+    //    static {
+//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
+//    }
     protected abstract int layout();
 
     protected abstract boolean isTransparent();
@@ -48,10 +55,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             Icepick.restoreInstanceState(this, savedInstanceState);
         }
         setupToolbarAndStatusBar();
-
-        if (!isUserLoggedIn() && !isSecured()) {
-            startActivity(new Intent(this, LoginView.class));
-            finish();
+        if (!PrefHelper.getBoolean(SKIPPED_LOGIN)) {
+            if (!isUserLoggedIn() && !isSecured()) {
+                startActivity(new Intent(this, LoginView.class));
+                finish();
+            }
         }
     }
 
@@ -96,9 +104,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void changeAppColor() {
-        if (!isTransparent()) {
-            if (AppHelper.isLollipopOrHigher()) {
-                AppHelper.setStatusBarColor(this, R.color.primary);
+        if (AppHelper.isLollipopOrHigher()) {
+            if (!isTransparent()) {
+                getWindow().setStatusBarColor(ViewHelper.getPrimaryDarkColor(this));
+            } else {
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
             }
         }
     }
