@@ -3,6 +3,7 @@ package com.fastaccess.cheaphlight.ui.base;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,10 +29,11 @@ import static com.fastaccess.cheaphlight.helper.PrefConstance.SKIPPED_LOGIN;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    //    static {
+//    static {
 //        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
 //    }
-    protected abstract int layout();
+
+    @LayoutRes protected abstract int layout();
 
     protected abstract boolean isTransparent();
 
