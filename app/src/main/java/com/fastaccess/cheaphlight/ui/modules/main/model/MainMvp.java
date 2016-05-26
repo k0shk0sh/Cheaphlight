@@ -17,6 +17,8 @@ public interface MainMvp {
         void closeOpenDrawer(boolean close);
 
         void setupUserDetails(@NonNull FirebaseUser user, @NonNull android.view.View header);
+
+        void logout();
     }
 
     interface Presenter extends NavigationView.OnNavigationItemSelectedListener {

@@ -9,7 +9,11 @@
     <string name="grid_layout_manager" translatable="false">com.fastaccess.cheaphlight.ui.widgets.recyclerview.layout_manager.GridManager</string>
     <string name="staggered_layout_manager" translatable="false">com.fastaccess.cheaphlight.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
     <string name="login_fail">Login Failed.</string>
-    <string name="in_progress">In Progress, Please Wait...</string>
+    <string name="in_progress">In Progress, Please Wait…</string>
     <string name="close">Close</string>
-    <string name="logout_out">Logout Out</string>
+    <string name="logout">Logout</string>
+    <string name="action">Action</string>
+    <string name="settings">Settings</string>
+    <string name="confirm_message">Are you sure?</string>
+    <string name="cancel">Cancel</string>
 </resources>

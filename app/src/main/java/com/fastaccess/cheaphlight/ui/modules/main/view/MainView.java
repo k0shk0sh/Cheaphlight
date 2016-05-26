@@ -27,6 +27,7 @@ public class MainView extends BaseActivity implements MainMvp.View {
 
     @BindView(R.id.navigation) NavigationView navigation;
     @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
+
     private MainPresenter presenter;
 
     @Override protected int layout() {
@@ -67,6 +68,10 @@ public class MainView extends BaseActivity implements MainMvp.View {
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(((CircleImageView) header.findViewById(R.id.image_avatar)));
         }
+    }
+
+    @Override public void logout() {
+        getPresenter().logout(this);
     }
 
     @Override public void onBackPressed() {

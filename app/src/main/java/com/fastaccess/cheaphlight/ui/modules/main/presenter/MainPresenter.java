@@ -2,14 +2,17 @@ package com.fastaccess.cheaphlight.ui.modules.main.presenter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.fastaccess.cheaphlight.R;
 import com.fastaccess.cheaphlight.helper.PrefConstance;
 import com.fastaccess.cheaphlight.helper.PrefHelper;
 import com.fastaccess.cheaphlight.ui.base.mvp.presenter.BasePresenter;
@@ -33,6 +36,12 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
     }
 
     @Override public boolean onNavigationItemSelected(MenuItem item) {
+        getView().closeOpenDrawer(true);
+        switch (item.getItemId()) {
+            case R.id.logout:
+                getView().logout();
+                return true;
+        }
         return false;
     }
 
@@ -44,11 +53,20 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
         return false;
     }
 
-    @Override public void logout(@NonNull Context context) {
-        FirebaseAuth.getInstance().signOut();
-        PrefHelper.set(PrefConstance.SKIPPED_LOGIN, false);
-        context.startActivity(new Intent(context, LoginView.class));
-        ((Activity) context).finish();
+    @Override public void logout(@NonNull final Context context) {
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.logout)
+                .setMessage(R.string.confirm_message)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.logout, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        FirebaseAuth.getInstance().signOut();
+                        PrefHelper.set(PrefConstance.SKIPPED_LOGIN, false);
+                        context.startActivity(new Intent(context, LoginView.class));
+                        ((Activity) context).finish();
+                    }
+                })
+                .show();
     }
 
     @Override public void displayUserDetails(@NonNull NavigationView navigationView) {

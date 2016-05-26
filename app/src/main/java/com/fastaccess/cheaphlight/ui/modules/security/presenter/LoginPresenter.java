@@ -123,7 +123,6 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
             getView().hideProgress();
             getView().showMessage(R.string.login_fail);
         }
-        if (acct != null) Logger.e(acct.getEmail());
     }
 
     @Override public void onStart() {
@@ -156,7 +155,7 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
     @Override public void onComplete(@NonNull Task<AuthResult> task) {
         if (task.isSuccessful()) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            database.getReference("users").setValue(task.getResult().getUser(), this);
+            database.getReference("users").child(task.getResult().getUser().getUid()).setValue(task.getResult().getUser(), this);
         } else {
             getView().hideProgress();
             getView().showMessage(R.string.login_fail);
@@ -166,7 +165,7 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
     @Override public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
         getView().hideProgress();
         if (databaseError != null) {
-            FirebaseAuth.getInstance().signOut();//signout!!
+            FirebaseAuth.getInstance().signOut();
             getView().showMessage(databaseError.getMessage());
         } else {
             getView().onSuccessfullyLoggedIn();

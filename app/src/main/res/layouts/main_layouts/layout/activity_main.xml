@@ -15,6 +15,17 @@
 
         <include layout="@layout/appbar_elevation"/>
 
+        <io.codetail.widget.RevealFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:src="@drawable/checkable_drawable"/>
+        </io.codetail.widget.RevealFrameLayout>
+
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
@@ -23,6 +34,10 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/drawer_header"/>
+        app:headerLayout="@layout/drawer_header"
+        app:itemIconTint="?colorAccent"
+        app:itemTextColor="@color/primary_light"
+        app:menu="@menu/drawer_menu"
+        app:theme="@style/NavigationViewTheme"/>
 
 </android.support.v4.widget.DrawerLayout>

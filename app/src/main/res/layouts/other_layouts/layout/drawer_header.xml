@@ -25,6 +25,7 @@
         style="@style/TextAppearance.AppCompat.Large.Inverse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         tools:text="Kosh"/>
 
     <com.fastaccess.cheaphlight.ui.widgets.FontTextView
