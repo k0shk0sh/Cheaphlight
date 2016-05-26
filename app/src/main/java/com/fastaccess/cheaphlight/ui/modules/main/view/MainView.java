@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fastaccess.cheaphlight.R;
+import com.fastaccess.cheaphlight.helper.InputHelper;
 import com.fastaccess.cheaphlight.helper.Logger;
 import com.fastaccess.cheaphlight.ui.base.BaseActivity;
 import com.fastaccess.cheaphlight.ui.modules.main.model.MainMvp;
@@ -60,15 +61,12 @@ public class MainView extends BaseActivity implements MainMvp.View {
     @Override public void setupUserDetails(@NonNull FirebaseUser user, @NonNull View header) {
         ((TextView) header.findViewById(R.id.username)).setText(user.getDisplayName());
         ((TextView) header.findViewById(R.id.email)).setText(user.getEmail());
-        Glide.with(this)
-                .load(user.getPhotoUrl())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(((CircleImageView) header.findViewById(R.id.image_avatar)));
-        header.findViewById(R.id.logout).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                getPresenter().logout(MainView.this);
-            }
-        });
+        if (!InputHelper.isEmpty(user.getPhotoUrl())) {
+            Glide.with(this)
+                    .load(user.getPhotoUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(((CircleImageView) header.findViewById(R.id.image_avatar)));
+        }
     }
 
     @Override public void onBackPressed() {

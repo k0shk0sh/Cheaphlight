@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -13,6 +16,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 
 /**
  * Created by Kosh on 26 May 2016, 6:47 PM
@@ -28,8 +32,6 @@ public interface LoginMvp {
 
         void onGoogleLoginSuccessfully(@NonNull GoogleSignInResult result);
 
-        void onGoogleLogin();
-
         void showMessage(String errorMessage);
 
         void showMessage(@StringRes int msgId);
@@ -37,7 +39,8 @@ public interface LoginMvp {
         void onSuccessfullyLoggedIn();
     }
 
-    interface Presenter extends GoogleApiClient.OnConnectionFailedListener, FirebaseAuth.AuthStateListener, OnCompleteListener<AuthResult> {
+    interface Presenter extends GoogleApiClient.OnConnectionFailedListener, FirebaseAuth.AuthStateListener,
+            OnCompleteListener<AuthResult>, DatabaseReference.CompletionListener, FacebookCallback<LoginResult> {
 
         void onGoogleLogin(@NonNull Activity context);
 
@@ -48,6 +51,8 @@ public interface LoginMvp {
         @NonNull GoogleSignInOptions googleSignInOptions(@NonNull Context context);
 
         @NonNull GoogleApiClient getGoogleApiClient(@NonNull Activity context);
+
+        @NonNull CallbackManager getCallbackManager();
 
         void onActivityResult(int requestCode, int resultCode, Intent data);
 

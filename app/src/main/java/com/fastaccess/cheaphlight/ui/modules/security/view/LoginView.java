@@ -31,7 +31,7 @@ public class LoginView extends BaseActivity implements LoginMvp.View {
     @BindView(R.id.googleButton) SignInButton googleButton;
     @BindView(R.id.facebookButton) LoginButton facebookButton;
     @BindView(R.id.skip) FontButton skip;
-    private ProgressDialog progressBar;
+    private ProgressDialog progressDialog;
     private AlertDialog alertDialog;
     private LoginPresenter presenter;
 
@@ -41,6 +41,7 @@ public class LoginView extends BaseActivity implements LoginMvp.View {
                 getPresenter().onGoogleLogin(this);
                 break;
             case R.id.facebookLogin:
+                getPresenter().onFacebookLogin(facebookButton);
                 break;
             case R.id.skip:
                 getPresenter().onFinish(this);
@@ -74,24 +75,24 @@ public class LoginView extends BaseActivity implements LoginMvp.View {
     }
 
     @Override public void showProgress() {
-        if (progressBar == null) {
-            progressBar = new ProgressDialog(this);
-            progressBar.setCancelable(false);
-            progressBar.setMessage(getString(R.string.in_progress));
+        facebookLogin.setEnabled(false);
+        googleLogin.setEnabled(false);
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage(getString(R.string.in_progress));
         }
-        if (!progressBar.isShowing()) progressBar.show();
+        if (!progressDialog.isShowing()) progressDialog.show();
     }
 
     @Override public void hideProgress() {
-        if (progressBar != null && progressBar.isShowing()) progressBar.dismiss();
+        if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
+        facebookLogin.setEnabled(true);
+        googleLogin.setEnabled(true);
     }
 
     @Override public void onGoogleLoginSuccessfully(@NonNull GoogleSignInResult result) {
         getPresenter().handleGoogleLogin(this, result);
-    }
-
-    @Override public void onGoogleLogin() {
-        getPresenter().onGoogleLogin(this);
     }
 
     @Override public void showMessage(String errorMessage) {

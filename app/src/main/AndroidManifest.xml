@@ -26,6 +26,11 @@
             android:name=".ui.modules.security.view.LoginView"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme"/>
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@style/LoginTheme"/>
 
         <service
             android:name=".notification.push.view.PushNotification">

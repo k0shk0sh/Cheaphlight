@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.fastaccess.cheaphlight.R;
 import com.fastaccess.cheaphlight.helper.InputHelper;
@@ -24,9 +27,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by Kosh on 26 May 2016, 6:50 PM
@@ -37,6 +44,7 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
     private final static int GOOGLE_LOGIN_REQUEST_CODE = 1;
     private GoogleApiClient googleApiClient;
     private FirebaseAuth mAuth;
+    private CallbackManager callbackManager;
 
     private LoginPresenter(LoginMvp.View view) {
         super(view);
@@ -52,7 +60,9 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
     }
 
     @Override public void onFacebookLogin(@NonNull LoginButton loginButton) {
-
+        loginButton.setReadPermissions("email", "public_profile");
+        loginButton.registerCallback(getCallbackManager(), this);
+        loginButton.performClick();
     }
 
     @NonNull @Override public FirebaseAuth getFirebaseAuth() {
@@ -77,6 +87,13 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         return googleApiClient;
     }
 
+    @NonNull @Override public CallbackManager getCallbackManager() {
+        if (callbackManager == null) {
+            callbackManager = CallbackManager.Factory.create();
+        }
+        return callbackManager;
+    }
+
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == GOOGLE_LOGIN_REQUEST_CODE) {
@@ -86,6 +103,10 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
                 } else {
                     getView().showMessage(R.string.login_fail);
                 }
+            } else {
+                getView().showProgress();
+                Logger.e("Showing Progress");
+                getCallbackManager().onActivityResult(requestCode, resultCode, data);
             }
         }
     }
@@ -96,7 +117,7 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         if (acct != null && !InputHelper.isEmpty(acct.getIdToken())) {
             Logger.e(acct, acct.getIdToken(), acct.getEmail());
             AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-            mAuth.signInWithCredential(credential).addOnCompleteListener(context, this);
+            getFirebaseAuth().signInWithCredential(credential).addOnCompleteListener(context, this);
         } else {
             Logger.e("token is null");
             getView().hideProgress();
@@ -133,11 +154,36 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
     }
 
     @Override public void onComplete(@NonNull Task<AuthResult> task) {
-        getView().hideProgress();
         if (task.isSuccessful()) {
-            getView().onSuccessfullyLoggedIn();
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            database.getReference("users").setValue(task.getResult().getUser(), this);
         } else {
+            getView().hideProgress();
             getView().showMessage(R.string.login_fail);
         }
+    }
+
+    @Override public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+        getView().hideProgress();
+        if (databaseError != null) {
+            FirebaseAuth.getInstance().signOut();//signout!!
+            getView().showMessage(databaseError.getMessage());
+        } else {
+            getView().onSuccessfullyLoggedIn();
+        }
+    }
+
+    @Override public void onSuccess(LoginResult loginResult) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
+        getFirebaseAuth().signInWithCredential(credential).addOnCompleteListener(this);
+    }
+
+    @Override public void onCancel() {
+        getView().hideProgress();
+    }
+
+    @Override public void onError(FacebookException error) {
+        getView().hideProgress();
+        getView().showMessage(error.getMessage());
     }
 }
