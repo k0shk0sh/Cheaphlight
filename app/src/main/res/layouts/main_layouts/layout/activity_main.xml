@@ -17,12 +17,14 @@
 
         <io.codetail.widget.RevealFrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/scroll_behavior">
 
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
+                android:clickable="true"
                 android:src="@drawable/checkable_drawable"/>
         </io.codetail.widget.RevealFrameLayout>
 

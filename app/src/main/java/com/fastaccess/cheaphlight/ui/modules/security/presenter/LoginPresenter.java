@@ -154,8 +154,11 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
 
     @Override public void onComplete(@NonNull Task<AuthResult> task) {
         if (task.isSuccessful()) {
+            FirebaseUser user = task.getResult().getUser();
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            database.getReference("users").child(task.getResult().getUser().getUid()).setValue(task.getResult().getUser(), this);
+            database.getReference("users")
+                    .child(user.getUid())
+                    .setValue(user, this);
         } else {
             getView().hideProgress();
             getView().showMessage(R.string.login_fail);
