@@ -8,4 +8,8 @@
     <string name="linear_layout_manager" translatable="false">com.fastaccess.cheaphlight.ui.widgets.recyclerview.layout_manager.LinearManager</string>
     <string name="grid_layout_manager" translatable="false">com.fastaccess.cheaphlight.ui.widgets.recyclerview.layout_manager.GridManager</string>
     <string name="staggered_layout_manager" translatable="false">com.fastaccess.cheaphlight.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
+    <string name="login_fail">Login Failed.</string>
+    <string name="in_progress">In Progress, Please Wait...</string>
+    <string name="close">Close</string>
+    <string name="logout_out">Logout Out</string>
 </resources>

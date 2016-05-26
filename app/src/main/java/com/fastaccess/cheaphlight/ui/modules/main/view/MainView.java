@@ -1,18 +1,26 @@
 package com.fastaccess.cheaphlight.ui.modules.main.view;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fastaccess.cheaphlight.R;
 import com.fastaccess.cheaphlight.helper.Logger;
 import com.fastaccess.cheaphlight.ui.base.BaseActivity;
 import com.fastaccess.cheaphlight.ui.modules.main.model.MainMvp;
 import com.fastaccess.cheaphlight.ui.modules.main.presenter.MainPresenter;
+import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainView extends BaseActivity implements MainMvp.View {
 
@@ -39,12 +47,28 @@ public class MainView extends BaseActivity implements MainMvp.View {
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+        setToolbarIcon(R.drawable.ic_menu);
         navigation.setNavigationItemSelectedListener(getPresenter());
+        getPresenter().displayUserDetails(navigation);
     }
 
     @Override public void closeOpenDrawer(boolean close) {
         if (close) drawerLayout.closeDrawer(GravityCompat.START);
         else drawerLayout.openDrawer(GravityCompat.START);
+    }
+
+    @Override public void setupUserDetails(@NonNull FirebaseUser user, @NonNull View header) {
+        ((TextView) header.findViewById(R.id.username)).setText(user.getDisplayName());
+        ((TextView) header.findViewById(R.id.email)).setText(user.getEmail());
+        Glide.with(this)
+                .load(user.getPhotoUrl())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(((CircleImageView) header.findViewById(R.id.image_avatar)));
+        header.findViewById(R.id.logout).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                getPresenter().logout(MainView.this);
+            }
+        });
     }
 
     @Override public void onBackPressed() {
@@ -57,5 +81,13 @@ public class MainView extends BaseActivity implements MainMvp.View {
     public MainPresenter getPresenter() {
         if (presenter == null) presenter = MainPresenter.with(this);
         return presenter;
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            getPresenter().openDrawer();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

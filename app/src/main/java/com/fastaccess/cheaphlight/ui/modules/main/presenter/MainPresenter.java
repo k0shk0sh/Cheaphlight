@@ -1,12 +1,22 @@
 package com.fastaccess.cheaphlight.ui.modules.main.presenter;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.fastaccess.cheaphlight.helper.PrefConstance;
+import com.fastaccess.cheaphlight.helper.PrefHelper;
 import com.fastaccess.cheaphlight.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.cheaphlight.ui.modules.main.model.MainMvp;
+import com.fastaccess.cheaphlight.ui.modules.security.view.LoginView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Created by Kosh on 25 May 2016, 9:20 PM
@@ -32,5 +42,25 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
             return true;
         }
         return false;
+    }
+
+    @Override public void logout(@NonNull Context context) {
+        FirebaseAuth.getInstance().signOut();
+        PrefHelper.set(PrefConstance.SKIPPED_LOGIN, false);
+        context.startActivity(new Intent(context, LoginView.class));
+        ((Activity) context).finish();
+    }
+
+    @Override public void displayUserDetails(@NonNull NavigationView navigationView) {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() != null) {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            View header = navigationView.getHeaderView(0);
+            getView().setupUserDetails(user, header);
+        }
+    }
+
+    @Override public void openDrawer() {
+        getView().closeOpenDrawer(false);
     }
 }

@@ -14,6 +14,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="com.fastaccess.cheaphlight.ui.modules.main.view.MainView"
+            android:launchMode="singleTop"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
