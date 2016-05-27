@@ -10,8 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.fastaccess.cheaphlight.App;
 import com.fastaccess.cheaphlight.R;
 import com.fastaccess.cheaphlight.helper.InputHelper;
 import com.fastaccess.cheaphlight.helper.Logger;
@@ -63,10 +62,9 @@ public class MainView extends BaseActivity implements MainMvp.View {
         ((TextView) header.findViewById(R.id.username)).setText(user.getDisplayName());
         ((TextView) header.findViewById(R.id.email)).setText(user.getEmail());
         if (!InputHelper.isEmpty(user.getPhotoUrl())) {
-            Glide.with(this)
-                    .load(user.getPhotoUrl())
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(((CircleImageView) header.findViewById(R.id.image_avatar)));
+            App.getInstance().getImageLoader()
+                    .displayImage("" + user.getPhotoUrl(), ((CircleImageView) header.findViewById(R.id.image_avatar)),
+                            App.getInstance().getOptions());
         }
     }
 

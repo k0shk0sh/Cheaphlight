@@ -20,12 +20,13 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/scroll_behavior">
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center"
-                android:clickable="true"
-                android:src="@drawable/checkable_drawable"/>
+            <fragment
+                android:id="@+id/fake"
+                android:name="com.fastaccess.cheaphlight.ui.modules.setup.view.MyFavCountryView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout="@layout/my_fav_country_page"/>
+
         </io.codetail.widget.RevealFrameLayout>
 
     </android.support.design.widget.CoordinatorLayout>
