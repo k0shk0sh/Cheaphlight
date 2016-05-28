@@ -2,7 +2,7 @@ package com.fastaccess.cheaphlight.ui.modules.setup.view;
 
 import android.support.v7.widget.CardView;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.fastaccess.cheaphlight.R;
 import com.fastaccess.cheaphlight.ui.widgets.recyclerview.BaseRecyclerAdapter;
@@ -15,9 +15,8 @@ import butterknife.BindView;
  */
 
 public class CountriesHolder extends BaseViewHolder {
-    @BindView(R.id.countryFlag) public ImageView countryFlag;
-    @BindView(R.id.selected) public ImageView selected;
     @BindView(R.id.card) public CardView cardView;
+    @BindView(R.id.countryName) public TextView countryName;
 
     public CountriesHolder(View itemView, BaseRecyclerAdapter adapter) {
         super(itemView, adapter);

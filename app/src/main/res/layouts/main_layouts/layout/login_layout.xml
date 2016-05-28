@@ -16,7 +16,7 @@
         android:layout_marginTop="?actionBarSize"
         android:gravity="center"
         android:text="@string/login_msg"
-        android:textColor="?colorPrimaryDark"
+        android:textColor="@color/primary_dark"
         android:textStyle="bold"/>
 
     <LinearLayout

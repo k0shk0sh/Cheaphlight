@@ -22,4 +22,7 @@
     <string name="country_selection_error">Please select your country</string>
     <string name="select_your_favorite_countries">Select your favorite countries:</string>
     <string name="error_loading_flags">Error Loading Country Flags.</string>
+    <string name="my_favorite">My Favorite:</string>
+    <string name="favorite_maximum_error">You reached the maximum number of favorite allowed. Long press your selected favorite country to replace it
+        .</string>
 </resources>

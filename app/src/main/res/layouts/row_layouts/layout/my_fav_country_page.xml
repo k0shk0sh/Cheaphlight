@@ -22,36 +22,45 @@
 
             <com.fastaccess.cheaphlight.ui.widgets.FontTextView
                 style="@style/TextAppearance.AppCompat.Medium.Inverse"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_marginStart="@dimen/spacing_normal"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/select_your_favorite_countries"/>
+                android:text="@string/my_favorite"/>
 
-            <ImageView
-                android:id="@+id/next"
-                android:layout_width="wrap_content"
+            <com.fastaccess.cheaphlight.ui.widgets.FontAutoCompleteEditText
+                android:id="@+id/country"
+                style="@style/TextAppearance.AppCompat.Large.Inverse"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/spacing_s_large"
-                android:layout_marginTop="@dimen/spacing_s_large"
-                android:src="@drawable/checkable_next_drawable"/>
-
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:background="@color/transparent"
+                android:completionThreshold="2"
+                android:hint="@string/mars"
+                android:inputType="textAutoCorrect"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
+
 
     <com.fastaccess.cheaphlight.ui.widgets.recyclerview.ResizeableRecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_s_large"
-        app:layoutManager="@string/grid_layout_manager"
+        app:layoutManager="@string/staggered_layout_manager"
         app:reverseLayout="false"
         app:spanCount="2"
         app:stackFromEnd="false"/>
 
+    <ImageView
+        android:id="@+id/next"
+        android:layout_width="@dimen/keyline_1"
+        android:layout_height="@dimen/keyline_1"
+        android:layout_gravity="bottom|center"
+        android:layout_margin="@dimen/spacing_s_large"
+        android:src="@drawable/checkable_next_drawable"/>
 
 </LinearLayout>
