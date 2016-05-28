@@ -69,7 +69,7 @@ public class MyFavCountryPresenter extends BasePresenter<MyFavCountryMvp.View> i
     }
 
     @Override public boolean canAddCountry(@NonNull List<String> myFavs) {
-        return myFavs.size() < 5;
+        return myFavs.size() <= 5;
     }
 
     @Override public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
