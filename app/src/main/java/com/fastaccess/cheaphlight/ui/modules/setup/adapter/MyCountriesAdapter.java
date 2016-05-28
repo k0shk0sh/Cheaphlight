@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.fastaccess.cheaphlight.R;
-import com.fastaccess.cheaphlight.helper.InputHelper;
+import com.fastaccess.cheaphlight.data.model.CountriesModel;
 import com.fastaccess.cheaphlight.ui.viewholder.CountriesHolder;
 import com.fastaccess.cheaphlight.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.cheaphlight.ui.widgets.recyclerview.BaseViewHolder;
@@ -17,10 +17,10 @@ import java.util.List;
  * Created by Kosh on 27 May 2016, 9:00 PM
  */
 
-public class MyCountriesAdapter extends BaseRecyclerAdapter<String, CountriesHolder,
-        BaseViewHolder.OnItemClickListener<String>> {
+public class MyCountriesAdapter extends BaseRecyclerAdapter<CountriesModel, CountriesHolder,
+        BaseViewHolder.OnItemClickListener<CountriesModel>> {
 
-    public MyCountriesAdapter(@NonNull List<String> data, @Nullable BaseViewHolder.OnItemClickListener<String> listener) {
+    public MyCountriesAdapter(@NonNull List<CountriesModel> data, @Nullable BaseViewHolder.OnItemClickListener<CountriesModel> listener) {
         super(data, listener);
     }
 
@@ -29,8 +29,6 @@ public class MyCountriesAdapter extends BaseRecyclerAdapter<String, CountriesHol
     }
 
     @Override public void onBindViewHolder(CountriesHolder holder, int position) {
-        if (!InputHelper.isEmpty(getItem(position))) {
-            holder.countryName.setText(getItem(position));
-        }
+        holder.countryName.setText(getItem(position).getCountryName());
     }
 }

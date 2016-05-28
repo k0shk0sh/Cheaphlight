@@ -11,20 +11,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
 import com.fastaccess.cheaphlight.R;
+import com.fastaccess.cheaphlight.data.model.CountriesModel;
 import com.fastaccess.cheaphlight.helper.AnimHelper;
-import com.fastaccess.cheaphlight.helper.InputHelper;
-import com.fastaccess.cheaphlight.provider.analytics.Analytics;
+import com.fastaccess.cheaphlight.provider.Analytics;
 import com.fastaccess.cheaphlight.ui.base.BaseFragment;
 import com.fastaccess.cheaphlight.ui.modules.setup.model.MyCountryMvp;
 import com.fastaccess.cheaphlight.ui.modules.setup.model.SetupPagerMvp;
 import com.fastaccess.cheaphlight.ui.modules.setup.presenter.MyCountryPresenter;
 import com.fastaccess.cheaphlight.ui.widgets.FontAutoCompleteEditText;
 
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import icepick.State;
 
 /**
  * Created by Kosh on 27 May 2016, 7:54 PM
@@ -34,9 +34,11 @@ public class MyCountryView extends BaseFragment implements MyCountryMvp.View {
     @BindView(R.id.country) FontAutoCompleteEditText country;
     @BindView(R.id.progress) View progress;
     @BindView(R.id.next) ImageView next;
-    private List<String> countries;
+    @State int selectionState = -1;
+    private List<CountriesModel> countries;
     private SetupPagerMvp.View view;
     private MyCountryPresenter presenter;
+    private ArrayAdapter arrayAdapter;
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
@@ -60,17 +62,27 @@ public class MyCountryView extends BaseFragment implements MyCountryMvp.View {
     }
 
     @Override protected void onFragmentCreated(View view, @Nullable Bundle savedInstanceState) {
-        countries = Arrays.asList(getResources().getStringArray(R.array.countries_list_human));
-        country.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, countries));
+        countries = CountriesModel.getAllCountries();
+        arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, countries);
+        country.setAdapter(arrayAdapter);
+        country.setOnItemClickListener(getPresenter());
     }
 
     @OnClick(R.id.next) public void onClick(View view) {
         Analytics.logEvent(view.getId(), view.getTag(), view.getClass());
-        getPresenter().onSelectedCountry(countries, InputHelper.toString(country));
+        if (selectionState == -1) {
+            showMessage(R.string.country_selection_error);
+            return;
+        }
+        getPresenter().onSelectedCountry(countries, countries.get(selectionState));
     }
 
     @Override public void onCountryTextError(@StringRes int resId) {
         country.setError(resId != 0 ? getString(resId) : null);
+    }
+
+    @Override public void onSelectedAtPosition(int selectedPosition) {
+        this.selectionState = selectedPosition;
     }
 
     @Override public void onShowProgress() {

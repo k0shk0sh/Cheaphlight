@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.widget.AdapterView;
 
+import com.fastaccess.cheaphlight.data.model.CountriesModel;
 import com.fastaccess.cheaphlight.ui.widgets.recyclerview.BaseViewHolder;
 import com.google.firebase.database.DatabaseReference;
 
@@ -21,9 +22,9 @@ public interface MyFavCountryMvp {
 
         void onCountryTextError(@StringRes int resId);
 
-        void onAddCountry(@Nullable String country);
+        void onAddCountry(@Nullable CountriesModel country);
 
-        void insertCountry(@NonNull String country);
+        void insertCountry(@NonNull CountriesModel country);
 
         void onRemove(int position);
 
@@ -38,11 +39,12 @@ public interface MyFavCountryMvp {
         void onError(@StringRes int resId);
     }
 
-    interface Presenter extends DatabaseReference.CompletionListener, BaseViewHolder.OnItemClickListener, AdapterView.OnItemClickListener {
-        void onSelectedCountry(ArrayList<String> myFavList, List<String> countries, @Nullable Object country);
+    interface Presenter extends DatabaseReference.CompletionListener,
+            BaseViewHolder.OnItemClickListener<CountriesModel>, AdapterView.OnItemClickListener {
+        void onSelectedCountry(ArrayList<CountriesModel> myFavList, List<CountriesModel> countries, @Nullable CountriesModel country);
 
-        void onSubmit(@NonNull List<String> selectedCountries);
+        void onSubmit(@NonNull List<CountriesModel> selectedCountries);
 
-        boolean canAddCountry(@NonNull List<String> myFavs);
+        boolean canAddCountry(@NonNull List<CountriesModel> myFavs);
     }
 }

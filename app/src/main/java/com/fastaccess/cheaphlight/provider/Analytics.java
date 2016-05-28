@@ -1,4 +1,4 @@
-package com.fastaccess.cheaphlight.provider.analytics;
+package com.fastaccess.cheaphlight.provider;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;

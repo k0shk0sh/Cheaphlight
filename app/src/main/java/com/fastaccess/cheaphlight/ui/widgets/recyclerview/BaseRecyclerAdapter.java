@@ -31,8 +31,7 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseViewHolder,
         return data;
     }
 
-    @Nullable public T getItem(int position) {
-        if (data.isEmpty()) return null;
+    public T getItem(int position) {
         return data.get(position);
     }
 

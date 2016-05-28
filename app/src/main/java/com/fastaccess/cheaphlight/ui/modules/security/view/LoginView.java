@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.facebook.login.widget.LoginButton;
 import com.fastaccess.cheaphlight.R;
-import com.fastaccess.cheaphlight.provider.analytics.Analytics;
+import com.fastaccess.cheaphlight.provider.Analytics;
 import com.fastaccess.cheaphlight.ui.base.BaseActivity;
 import com.fastaccess.cheaphlight.ui.modules.security.model.LoginMvp;
 import com.fastaccess.cheaphlight.ui.modules.security.presenter.LoginPresenter;

@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 
 import com.fastaccess.cheaphlight.App;
 import com.fastaccess.cheaphlight.R;
+import com.fastaccess.cheaphlight.data.model.CountriesModel;
 import com.fastaccess.cheaphlight.helper.InputHelper;
 import com.fastaccess.cheaphlight.helper.PrefConstance;
 import com.fastaccess.cheaphlight.helper.PrefHelper;
@@ -33,12 +34,12 @@ public class MyFavCountryPresenter extends BasePresenter<MyFavCountryMvp.View> i
         return new MyFavCountryPresenter(view);
     }
 
-    @Override public void onSelectedCountry(ArrayList<String> myFavList, List<String> countries, @Nullable Object country) {
+    @Override public void onSelectedCountry(ArrayList<CountriesModel> myFavList, List<CountriesModel> countries, @Nullable CountriesModel country) {
         boolean isEmpty = InputHelper.isEmpty(country);
         if (!isEmpty) {
-            if (countries.contains(country.toString())) {
+            if (countries.contains(country) && !myFavList.contains(country)) {
                 if (canAddCountry(myFavList)) {
-                    getView().insertCountry(country.toString());
+                    getView().insertCountry(country);
                 } else {
                     getView().onError(R.string.favorite_maximum_error);
                 }
@@ -46,11 +47,11 @@ public class MyFavCountryPresenter extends BasePresenter<MyFavCountryMvp.View> i
                 getView().onError(R.string.fav_country_selection_error);
             }
         } else {
-            getView().onCountryTextError(R.string.country_selection_error);
+            getView().onCountryTextError(R.string.fav_country_selection_error);
         }
     }
 
-    @Override public void onSubmit(@NonNull List<String> selectedCountries) {
+    @Override public void onSubmit(@NonNull List<CountriesModel> selectedCountries) {
         if (canAddCountry(selectedCountries)) {
             FirebaseUser user = getApp().getFirebaseAuth().getCurrentUser();
             if (user == null || user.isAnonymous()) {
@@ -68,7 +69,7 @@ public class MyFavCountryPresenter extends BasePresenter<MyFavCountryMvp.View> i
         }
     }
 
-    @Override public boolean canAddCountry(@NonNull List<String> myFavs) {
+    @Override public boolean canAddCountry(@NonNull List<CountriesModel> myFavs) {
         return myFavs.size() <= 5;
     }
 
@@ -81,16 +82,16 @@ public class MyFavCountryPresenter extends BasePresenter<MyFavCountryMvp.View> i
         }
     }
 
-    @Override public void onItemClick(int position, View v, Object item) {
+    @Override public void onItemClick(int position, View v, CountriesModel item) {
         getView().onRemove(position);
     }
 
-    @Override public void onItemLongClick(int position, View v, Object item) {
+    @Override public void onItemLongClick(int position, View v, CountriesModel item) {
         getView().onRemove(position);
     }
 
     @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Object object = parent.getAdapter().getItem(position);
-        getView().onAddCountry(object.toString());
+        CountriesModel object = (CountriesModel) parent.getAdapter().getItem(position);
+        getView().onAddCountry(object);
     }
 }

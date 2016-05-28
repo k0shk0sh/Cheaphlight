@@ -11,8 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
 import com.fastaccess.cheaphlight.R;
+import com.fastaccess.cheaphlight.data.model.CountriesModel;
 import com.fastaccess.cheaphlight.helper.AnimHelper;
-import com.fastaccess.cheaphlight.provider.analytics.Analytics;
+import com.fastaccess.cheaphlight.provider.Analytics;
 import com.fastaccess.cheaphlight.ui.base.BaseFragment;
 import com.fastaccess.cheaphlight.ui.modules.setup.adapter.MyCountriesAdapter;
 import com.fastaccess.cheaphlight.ui.modules.setup.model.MyFavCountryMvp;
@@ -22,7 +23,6 @@ import com.fastaccess.cheaphlight.ui.widgets.FontAutoCompleteEditText;
 import com.fastaccess.cheaphlight.ui.widgets.recyclerview.ResizeableRecyclerView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,9 +38,9 @@ public class MyFavCountryView extends BaseFragment implements MyFavCountryMvp.Vi
     @BindView(R.id.recycler) ResizeableRecyclerView recycler;
     @BindView(R.id.country) FontAutoCompleteEditText country;
     @BindView(R.id.progress) View progress;
-    @State ArrayList<String> myFavList = new ArrayList<>();
+    @State ArrayList<CountriesModel> myFavList = new ArrayList<>();
     private MyCountriesAdapter adapter;
-    private List<String> countries;
+    private List<CountriesModel> countries;
     private SetupPagerMvp.View view;
     private MyFavCountryPresenter presenter;
 
@@ -66,7 +66,7 @@ public class MyFavCountryView extends BaseFragment implements MyFavCountryMvp.Vi
     }
 
     @Override protected void onFragmentCreated(final View view, @Nullable Bundle savedInstanceState) {
-        countries = Arrays.asList(getResources().getStringArray(R.array.countries_list_human));
+        countries = CountriesModel.getAllCountries();
         country.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, countries));
         adapter = new MyCountriesAdapter(myFavList, getPresenter());
         recycler.setAdapter(adapter);
@@ -86,11 +86,11 @@ public class MyFavCountryView extends BaseFragment implements MyFavCountryMvp.Vi
         country.setError(resId != 0 ? getString(resId) : null);
     }
 
-    @Override public void onAddCountry(@Nullable String country) {
+    @Override public void onAddCountry(@Nullable CountriesModel country) {
         getPresenter().onSelectedCountry(myFavList, countries, country);
     }
 
-    @Override public void insertCountry(@NonNull String country) {
+    @Override public void insertCountry(@NonNull CountriesModel country) {
         adapter.addItem(country);
         this.country.setText("");
     }

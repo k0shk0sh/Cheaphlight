@@ -1,8 +1,11 @@
 package com.fastaccess.cheaphlight.ui.modules.setup.presenter;
 
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.fastaccess.cheaphlight.R;
+import com.fastaccess.cheaphlight.data.model.CountriesModel;
 import com.fastaccess.cheaphlight.helper.InputHelper;
 import com.fastaccess.cheaphlight.helper.PrefConstance;
 import com.fastaccess.cheaphlight.helper.PrefHelper;
@@ -28,24 +31,23 @@ public class MyCountryPresenter extends BasePresenter<MyCountryMvp.View> impleme
         return new MyCountryPresenter(view);
     }
 
-    @Override public void onSelectedCountry(List<String> countries, @Nullable Object country) {
+    @Override public void onSelectedCountry(List<CountriesModel> countries, @Nullable CountriesModel country) {
         boolean isEmpty = InputHelper.isEmpty(country);
         if (!isEmpty) {
             FirebaseUser user = getApp().getFirebaseAuth().getCurrentUser();
-            String selectedCountry = country.toString();
-            if (!countries.contains(selectedCountry)) {
+            if (!countries.contains(country)) {
                 getView().onCountryTextError(R.string.country_selection_error);
                 return;
             }
             if (user == null || user.isAnonymous()) {
-                PrefHelper.set(PrefConstance.MY_COUNTRY, selectedCountry);
+                PrefHelper.set(PrefConstance.MY_COUNTRY, country);
                 getView().onSuccess();
                 return;
             }
             getView().onShowProgress();
             getApp().getFirebaseDatabase().getReference("users")
                     .child(user.getUid())
-                    .child("my_country").setValue(selectedCountry, this);
+                    .child("my_country").setValue(country, this);
         } else {
             getView().onCountryTextError(R.string.country_selection_error);
         }
@@ -58,5 +60,9 @@ public class MyCountryPresenter extends BasePresenter<MyCountryMvp.View> impleme
         } else {
             getView().onSuccess();
         }
+    }
+
+    @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        getView().onSelectedAtPosition(position);
     }
 }

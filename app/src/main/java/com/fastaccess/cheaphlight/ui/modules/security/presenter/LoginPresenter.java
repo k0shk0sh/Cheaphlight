@@ -15,7 +15,7 @@ import com.fastaccess.cheaphlight.helper.InputHelper;
 import com.fastaccess.cheaphlight.helper.Logger;
 import com.fastaccess.cheaphlight.helper.PrefConstance;
 import com.fastaccess.cheaphlight.helper.PrefHelper;
-import com.fastaccess.cheaphlight.provider.analytics.Analytics;
+import com.fastaccess.cheaphlight.provider.Analytics;
 import com.fastaccess.cheaphlight.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.cheaphlight.ui.modules.security.model.LoginMvp;
 import com.fastaccess.cheaphlight.ui.modules.setup.view.SetupPagerView;
