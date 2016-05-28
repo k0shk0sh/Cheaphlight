@@ -11,9 +11,9 @@ import com.fastaccess.cheaphlight.ui.modules.setup.view.MyFavCountryView;
  * Created by Kosh on 27 May 2016, 8:57 PM
  */
 
-public class SetupPager extends FragmentStatePagerAdapter {
+public class SetupPagerAdapter extends FragmentStatePagerAdapter {
 
-    public SetupPager(FragmentManager fm) {
+    public SetupPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

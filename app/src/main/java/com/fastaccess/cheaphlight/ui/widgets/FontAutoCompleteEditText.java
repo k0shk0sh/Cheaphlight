@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.ColorRes;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.util.AttributeSet;
+import android.widget.AdapterView;
 
 import com.fastaccess.cheaphlight.helper.TypeFaceHelper;
 import com.fastaccess.cheaphlight.helper.ViewHelper;
@@ -38,5 +39,9 @@ public class FontAutoCompleteEditText extends AppCompatAutoCompleteTextView {
         int nColor = getResources().getColor(normalColor);
         int pColor = getResources().getColor(pressedColor);
         setTextColor(ViewHelper.textSelector(nColor, pColor));
+    }
+
+    @Override public void setOnItemClickListener(AdapterView.OnItemClickListener l) {
+        super.setOnItemClickListener(l);
     }
 }

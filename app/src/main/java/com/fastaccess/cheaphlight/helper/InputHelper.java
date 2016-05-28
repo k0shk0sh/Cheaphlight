@@ -19,6 +19,10 @@ import java.text.NumberFormat;
  */
 public class InputHelper {
 
+    private static boolean isWhiteSpaces(String s) {
+        return s != null && s.matches("\\s+");
+    }
+
     public static boolean isEmail(String text) {
         return Patterns.EMAIL_ADDRESS.matcher(text).matches();
     }
@@ -60,10 +64,6 @@ public class InputHelper {
         return s.matches(pattern);
     }
 
-    protected static boolean isWhiteSpaces(String s) {
-        return s != null && s.matches("\\s+");
-    }
-
     public static String toNA(String value) {
         return isEmpty(value) ? "N/A" : value;
     }
@@ -90,5 +90,10 @@ public class InputHelper {
         decimalFormatSymbols.setCurrencySymbol("");
         ((DecimalFormat) nf).setDecimalFormatSymbols(decimalFormatSymbols);
         return nf.format(doubleValue).trim();
+    }
+
+    public static String ordinal(int i) {
+        return i % 100 == 11 || i % 100 == 12 || i % 100 == 13 ? i + "th" : i +
+                new String[]{"th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"}[i % 10];
     }
 }

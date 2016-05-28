@@ -1,5 +1,6 @@
 package com.fastaccess.cheaphlight.ui.base.mvp.presenter;
 
+import com.fastaccess.cheaphlight.App;
 import com.fastaccess.cheaphlight.ui.base.mvp.BaseMvp;
 
 /**
@@ -24,17 +25,20 @@ public class BasePresenter<V> implements BaseMvp.Presenter<V> {
         view = null;
     }
 
-    public boolean isViewAttached() {
+    protected boolean isViewAttached() {
         return view != null;
     }
 
-    public V getView() {
+    protected V getView() {
         checkViewAttached();//ensure checking, avoid doing it everytime.
         return view;
     }
 
-    public void checkViewAttached() {
+    protected void checkViewAttached() {
         if (!isViewAttached()) throw new NullPointerException("View is not injected to presenter");
     }
 
+    protected App getApp() {
+        return App.getInstance();
+    }
 }

@@ -1,4 +1,4 @@
-package com.fastaccess.cheaphlight.ui.modules.setup.view;
+package com.fastaccess.cheaphlight.ui.viewholder;
 
 import android.support.v7.widget.CardView;
 import android.view.View;

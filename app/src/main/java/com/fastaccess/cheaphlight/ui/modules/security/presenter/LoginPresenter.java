@@ -15,9 +15,10 @@ import com.fastaccess.cheaphlight.helper.InputHelper;
 import com.fastaccess.cheaphlight.helper.Logger;
 import com.fastaccess.cheaphlight.helper.PrefConstance;
 import com.fastaccess.cheaphlight.helper.PrefHelper;
+import com.fastaccess.cheaphlight.provider.analytics.Analytics;
 import com.fastaccess.cheaphlight.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.cheaphlight.ui.modules.main.view.MainView;
 import com.fastaccess.cheaphlight.ui.modules.security.model.LoginMvp;
+import com.fastaccess.cheaphlight.ui.modules.setup.view.SetupPagerView;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -57,16 +58,18 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
     @Override public void onGoogleLogin(@NonNull Activity context) {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(getGoogleApiClient(context));
         context.startActivityForResult(signInIntent, GOOGLE_LOGIN_REQUEST_CODE);
+        Analytics.logActionEvent(Analytics.getCurrentMethodName());
     }
 
     @Override public void onFacebookLogin(@NonNull LoginButton loginButton) {
         loginButton.setReadPermissions("email", "public_profile");
         loginButton.registerCallback(getCallbackManager(), this);
         loginButton.performClick();
+        Analytics.logActionEvent(Analytics.getCurrentMethodName());
     }
 
     @NonNull @Override public FirebaseAuth getFirebaseAuth() {
-        if (mAuth == null) mAuth = FirebaseAuth.getInstance();
+        if (mAuth == null) mAuth = getApp().getFirebaseAuth();
         return mAuth;
     }
 
@@ -135,8 +138,9 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
 
     @Override public void onFinish(@NonNull Activity activity) {
         PrefHelper.set(PrefConstance.SKIPPED_LOGIN, true);
-        activity.startActivity(new Intent(activity, MainView.class));
+        activity.startActivity(new Intent(activity, SetupPagerView.class));
         activity.finish();
+        Analytics.logActionEvent(Analytics.getCurrentMethodName());
     }
 
     @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -155,7 +159,7 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
     @Override public void onComplete(@NonNull Task<AuthResult> task) {
         if (task.isSuccessful()) {
             FirebaseUser user = task.getResult().getUser();
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            FirebaseDatabase database = getApp().getFirebaseDatabase();
             database.getReference("users")
                     .child(user.getUid())
                     .setValue(user, this);
@@ -163,6 +167,7 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
             getView().hideProgress();
             getView().showMessage(R.string.login_fail);
         }
+        Analytics.logActionEvent(task.isSuccessful(), Analytics.getCurrentMethodName());
     }
 
     @Override public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
@@ -173,6 +178,7 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         } else {
             getView().onSuccessfullyLoggedIn();
         }
+        Analytics.logActionEvent(databaseError == null, Analytics.getCurrentMethodName());
     }
 
     @Override public void onSuccess(LoginResult loginResult) {

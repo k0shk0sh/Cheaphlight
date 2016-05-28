@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.fastaccess.cheaphlight.R;
 import com.fastaccess.cheaphlight.helper.InputHelper;
-import com.fastaccess.cheaphlight.ui.modules.setup.view.CountriesHolder;
+import com.fastaccess.cheaphlight.ui.viewholder.CountriesHolder;
 import com.fastaccess.cheaphlight.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.cheaphlight.ui.widgets.recyclerview.BaseViewHolder;
 
