@@ -21,11 +21,13 @@ import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import icepick.State;
 
 public class MainView extends BaseActivity implements MainMvp.View {
 
     @BindView(R.id.navigation) NavigationView navigation;
     @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
+    @State @MainMvp.NavigationMode int mode;
 
     private MainPresenter presenter;
 
@@ -48,6 +50,9 @@ public class MainView extends BaseActivity implements MainMvp.View {
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            getPresenter().navigateTo(getSupportFragmentManager(), MainMvp.SUGGESTIONS);
+        }
         setToolbarIcon(R.drawable.ic_menu);
         navigation.setNavigationItemSelectedListener(getPresenter());
         getPresenter().displayUserDetails(navigation);
@@ -68,6 +73,11 @@ public class MainView extends BaseActivity implements MainMvp.View {
         }
     }
 
+    @Override public void onNavigateTo(@MainMvp.NavigationMode int mode) {
+        this.mode = mode;
+        getPresenter().navigateTo(getSupportFragmentManager(), mode);
+    }
+
     @Override public void logout() {
         getPresenter().logout(this);
     }
@@ -79,16 +89,16 @@ public class MainView extends BaseActivity implements MainMvp.View {
         }
     }
 
-    public MainPresenter getPresenter() {
-        if (presenter == null) presenter = MainPresenter.with(this);
-        return presenter;
-    }
-
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             getPresenter().openDrawer();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public MainPresenter getPresenter() {
+        if (presenter == null) presenter = MainPresenter.with(this);
+        return presenter;
     }
 }

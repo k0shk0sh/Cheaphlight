@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:id="@+id/empty_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:visibility="gone"
+    tools:visibility="visible">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/image_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_sad_face"
+            app:layout_constraintBottom_toBottomOf="@+id/holder"
+            app:layout_constraintEnd_toEndOf="@+id/holder"
+            app:layout_constraintStart_toStartOf="@+id/holder"
+            app:layout_constraintTop_toTopOf="@+id/holder"
+            app:layout_constraintVertical_bias="0.19"
+            tools:ignore="ContentDescription"
+            tools:layout_constraintBottom_creator="0"
+            tools:layout_constraintEnd_creator="0"
+            tools:layout_constraintStart_creator="0"
+            tools:layout_constraintTop_creator="0"
+            tools:layout_editor_absoluteX="145dp"
+            tools:layout_editor_absoluteY="321dp"/>
+
+        <com.fastaccess.cheaphlight.ui.widgets.FontTextView
+            android:id="@+id/text_message"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image_message"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/spacing_normal"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/spacing_s_large"
+            android:textColor="@color/divider"
+            app:layout_constraintEnd_toEndOf="@+id/holder"
+            app:layout_constraintStart_toStartOf="@+id/holder"
+            app:layout_constraintTop_toBottomOf="@+id/image_message"
+            tools:layout_constraintEnd_creator="0"
+            tools:layout_constraintStart_creator="0"
+            tools:layout_constraintTop_creator="0"
+            tools:layout_editor_absoluteX="205dp"
+            tools:layout_editor_absoluteY="441dp"
+            android:text="@string/no_data"/>
+
+        <com.fastaccess.cheaphlight.ui.widgets.FontButton
+            android:id="@+id/reload_button"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_message"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/spacing_normal"
+            android:padding="@dimen/spacing_s_large"
+            android:text="@string/reload"
+            android:textColor="@color/accent"
+            app:layout_constraintEnd_toEndOf="@+id/holder"
+            app:layout_constraintStart_toStartOf="@+id/holder"
+            app:layout_constraintTop_toBottomOf="@+id/text_message"
+            tools:layout_constraintEnd_creator="0"
+            tools:layout_constraintStart_creator="0"
+            tools:layout_constraintTop_creator="0"
+            tools:layout_editor_absoluteX="205dp"
+            tools:layout_editor_absoluteY="441dp"/>
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>

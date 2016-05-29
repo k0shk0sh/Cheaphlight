@@ -10,8 +10,6 @@ import com.fastaccess.cheaphlight.data.model.CountriesModel;
 import com.fastaccess.cheaphlight.data.model.UserModel;
 import com.fastaccess.cheaphlight.helper.InputHelper;
 import com.fastaccess.cheaphlight.helper.Logger;
-import com.fastaccess.cheaphlight.helper.PrefConstance;
-import com.fastaccess.cheaphlight.helper.PrefHelper;
 import com.fastaccess.cheaphlight.provider.Analytics;
 import com.fastaccess.cheaphlight.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.cheaphlight.ui.modules.setup.model.MyCountryMvp;
@@ -40,14 +38,13 @@ public class MyCountryPresenter extends BasePresenter<MyCountryMvp.View> impleme
     @Override public void onSelectedCountry(List<CountriesModel> countries, @Nullable CountriesModel country) {
         boolean isEmpty = InputHelper.isEmpty(country);
         if (!isEmpty) {
-            FirebaseUser user = getFirebaseAuth().getCurrentUser();
-            if (!countries.contains(country)) {
-                getView().onCountryTextError(R.string.country_selection_error);
+            FirebaseUser user = getUser();
+            if (user == null) {
+                getView().onError(R.string.please_login);
                 return;
             }
-            if (user == null || user.isAnonymous()) {
-                PrefHelper.set(PrefConstance.MY_COUNTRY, country);
-                getView().onSuccess();
+            if (!countries.contains(country)) {
+                getView().onCountryTextError(R.string.country_selection_error);
                 return;
             }
             getView().onShowProgress();
@@ -87,7 +84,9 @@ public class MyCountryPresenter extends BasePresenter<MyCountryMvp.View> impleme
         if (dataSnapshot == null || dataSnapshot.getValue() == null) return;
         Logger.e(dataSnapshot.getValue());
         CountriesModel model = App.gson().fromJson(dataSnapshot.getValue().toString(), CountriesModel.class);
-        if (model != null) getView().onMyCountryReceived(model);
+        if (model != null) {
+            getView().onMyCountryReceived(model);
+        }
     }
 
     @Override public void onCancelled(DatabaseError databaseError) {

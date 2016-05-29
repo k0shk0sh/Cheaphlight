@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +19,7 @@ import com.fastaccess.cheaphlight.helper.PrefHelper;
 import com.fastaccess.cheaphlight.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.cheaphlight.ui.modules.main.model.MainMvp;
 import com.fastaccess.cheaphlight.ui.modules.security.view.LoginView;
+import com.fastaccess.cheaphlight.ui.modules.suggestions.view.SuggestionsView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -41,6 +43,12 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
             case R.id.logout:
                 getView().logout();
                 return true;
+            case R.id.settings:
+                getView().onNavigateTo(MainMvp.SETTINGS);
+                return true;
+            case R.id.suggestions:
+                getView().onNavigateTo(MainMvp.SUGGESTIONS);
+                return true;
         }
         return false;
     }
@@ -51,6 +59,18 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
             return true;
         }
         return false;
+    }
+
+    @Override public void navigateTo(@NonNull FragmentManager manager, @MainMvp.NavigationMode int mode) {
+        switch (mode) {
+            case MainMvp.SETTINGS:
+                break;
+            case MainMvp.SUGGESTIONS:
+                manager.beginTransaction()
+                        .replace(R.id.container, SuggestionsView.getInstance(), String.valueOf(mode))
+                        .commit();
+                break;
+        }
     }
 
     @Override public void logout(@NonNull final Context context) {

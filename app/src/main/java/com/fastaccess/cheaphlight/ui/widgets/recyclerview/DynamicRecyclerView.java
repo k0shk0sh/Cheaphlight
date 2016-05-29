@@ -1,18 +1,23 @@
 package com.fastaccess.cheaphlight.ui.widgets.recyclerview;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.fastaccess.cheaphlight.helper.AnimHelper;
+import com.fastaccess.cheaphlight.helper.Logger;
+
 /**
  * Created by Kosh on 9/24/2015. copyrights are reserved
  * <p>
- * recyclerview which will hide/show itself base on adapter
+ * recyclerview which will show/show itself base on adapter
  */
 public class DynamicRecyclerView extends RecyclerView {
 
     private View emptyView;
+    private View parentView;
 
     private AdapterDataObserver observer = new AdapterDataObserver() {
         @Override
@@ -50,12 +55,12 @@ public class DynamicRecyclerView extends RecyclerView {
         Adapter<?> adapter = getAdapter();
         if (adapter != null && emptyView != null) {
             if (adapter.getItemCount() == 0) {
-                emptyView.setVisibility(VISIBLE);
-                this.setVisibility(GONE);
+                show(false);
             } else {
-                emptyView.setVisibility(GONE);
-                this.setVisibility(VISIBLE);
+                show(true);
             }
+        } else {
+            show(false);
         }
 
     }
@@ -68,18 +73,29 @@ public class DynamicRecyclerView extends RecyclerView {
         }
     }
 
-    public void setEmptyView(View emptyView) {
+    private void show(boolean show) {
+        if (parentView == null) {
+            AnimHelper.animateVisibityWithTranslate(show, this);
+        } else {
+            AnimHelper.animateVisibityWithTranslate(show, parentView);
+        }
+        AnimHelper.animateVisibityWithTranslate(!show, emptyView);
+        Logger.e(show);
+    }
+
+    public void setEmptyView(View emptyView, @Nullable View parentView) {
         this.emptyView = emptyView;
+        this.parentView = parentView;
         showEmptyView();
     }
 
     public void hideProgress(View view) {
         if (!view.isShown()) return;
-//        ViewHelper.animateVisibility(false, view);
+        AnimHelper.animateVisibityWithTranslate(false, view);
     }
 
     public void showProgress(View view) {
         if (view.isShown()) return;
-//        ViewHelper.animateVisibility(true, view);
+        AnimHelper.animateVisibityWithTranslate(true, view);
     }
 }

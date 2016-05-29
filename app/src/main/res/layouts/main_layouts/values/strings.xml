@@ -25,4 +25,9 @@
     <string name="my_favorite">My Favorite:</string>
     <string name="favorite_maximum_error">You reached the maximum number of favorite allowed. Long press your selected favorite country to replace it
         .</string>
+    <string name="please_login">Please Login.</string>
+    <string name="suggestions">Suggestions</string>
+    <string name="reload">Reload</string>
+    <string name="network_error">No Internet Connection</string>
+    <string name="no_data">No Data.</string>
 </resources>

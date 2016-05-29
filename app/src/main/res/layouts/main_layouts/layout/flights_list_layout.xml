@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/layout_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/layout_content"
+        app:layout_constraintStart_toStartOf="@+id/layout_content"
+        app:layout_constraintTop_toTopOf="@+id/layout_content"
+        tools:layout_constraintEnd_creator="0"
+        tools:layout_constraintStart_creator="0"
+        tools:layout_editor_absoluteX="0dp">
+
+        <com.fastaccess.cheaphlight.ui.widgets.recyclerview.DynamicRecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_large"
+            app:layoutManager="@string/staggered_layout_manager"
+            app:layout_constraintLeft_toLeftOf="@+id/refresh"
+            app:spanCount="2"
+            tools:listitem="@layout/county_row_item"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <include
+        layout="@layout/empty_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/layout_content"
+        app:layout_constraintStart_toStartOf="@+id/layout_content"
+        app:layout_constraintTop_toTopOf="@+id/layout_content"
+        tools:layout_constraintBottom_creator="0"
+        tools:layout_constraintEnd_creator="0"
+        tools:layout_constraintStart_creator="0"
+        tools:layout_constraintTop_creator="0"/>
+
+    <include
+        layout="@layout/progress_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingBottom="?attr/actionBarSize"
+        app:layout_constraintBottom_toBottomOf="@+id/layout_content"
+        app:layout_constraintEnd_toEndOf="@+id/layout_content"
+        app:layout_constraintStart_toStartOf="@+id/layout_content"
+        app:layout_constraintTop_toTopOf="@+id/layout_content"
+        tools:layout_constraintBottom_creator="0"
+        tools:layout_constraintEnd_creator="0"
+        tools:layout_constraintStart_creator="0"
+        tools:layout_constraintTop_creator="0"
+        tools:layout_editor_absoluteX="205dp"
+        tools:layout_editor_absoluteY="382dp"/>
+</android.support.constraint.ConstraintLayout>

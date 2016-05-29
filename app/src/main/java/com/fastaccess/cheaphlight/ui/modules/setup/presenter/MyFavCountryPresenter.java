@@ -5,15 +5,12 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.fastaccess.cheaphlight.App;
 import com.fastaccess.cheaphlight.R;
 import com.fastaccess.cheaphlight.data.model.CountriesModel;
 import com.fastaccess.cheaphlight.data.model.UserModel;
 import com.fastaccess.cheaphlight.helper.FirebaseHelper;
 import com.fastaccess.cheaphlight.helper.InputHelper;
 import com.fastaccess.cheaphlight.helper.Logger;
-import com.fastaccess.cheaphlight.helper.PrefConstance;
-import com.fastaccess.cheaphlight.helper.PrefHelper;
 import com.fastaccess.cheaphlight.provider.Analytics;
 import com.fastaccess.cheaphlight.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.cheaphlight.ui.modules.setup.model.MyFavCountryMvp;
@@ -64,10 +61,9 @@ public class MyFavCountryPresenter extends BasePresenter<MyFavCountryMvp.View> i
             return;
         }
         if (canAddCountry(selectedCountries)) {
-            FirebaseUser user = getFirebaseAuth().getCurrentUser();
-            if (user == null || user.isAnonymous()) {
-                PrefHelper.set(PrefConstance.MY_FAV_COUNTRIES, App.gson().toJson(selectedCountries));
-                getView().onSuccess();
+            FirebaseUser user = getUser();
+            if (user == null) {
+                getView().onError(R.string.please_login);
                 return;
             }
             getView().onShowProgress();
