@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import com.fastaccess.cheaphlight.App;
 import com.fastaccess.cheaphlight.R;
+import com.google.firebase.database.Exclude;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -30,7 +31,7 @@ public class CountriesModel implements Parcelable {
     private String capital;
     private String continentName;
     private String continent;
-    private static List<CountriesModel> allCountries;
+    @Exclude private static List<CountriesModel> allCountries;
 
     public String getCountryCode() { return countryCode;}
 

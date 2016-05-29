@@ -15,8 +15,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 
 /**
  * Created by Kosh on 26 May 2016, 6:47 PM
@@ -39,14 +37,12 @@ public interface LoginMvp {
         void onSuccessfullyLoggedIn();
     }
 
-    interface Presenter extends GoogleApiClient.OnConnectionFailedListener, FirebaseAuth.AuthStateListener,
-            OnCompleteListener<AuthResult>, DatabaseReference.CompletionListener, FacebookCallback<LoginResult> {
+    interface Presenter extends GoogleApiClient.OnConnectionFailedListener,
+            OnCompleteListener<AuthResult>, FacebookCallback<LoginResult> {
 
         void onGoogleLogin(@NonNull Activity context);
 
         void onFacebookLogin(@NonNull LoginButton loginButton);
-
-        @NonNull FirebaseAuth getFirebaseAuth();
 
         @NonNull GoogleSignInOptions googleSignInOptions(@NonNull Context context);
 
@@ -59,8 +55,6 @@ public interface LoginMvp {
         void handleGoogleLogin(@NonNull Activity context, @NonNull GoogleSignInResult result);
 
         void onStart();
-
-        void onStop();
 
         void onFinish(@NonNull Activity activity);
     }

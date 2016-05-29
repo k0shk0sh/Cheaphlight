@@ -24,6 +24,7 @@
         </activity>
         <activity
             android:name=".ui.modules.security.view.LoginView"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme"/>
         <activity
@@ -34,6 +35,8 @@
 
         <activity
             android:name=".ui.modules.setup.view.SetupPagerView"
+            android:configChanges="keyboardHidden|orientation|screenSize|locale"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <service

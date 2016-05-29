@@ -7,7 +7,6 @@ import android.widget.AdapterView;
 
 import com.fastaccess.cheaphlight.data.model.CountriesModel;
 import com.fastaccess.cheaphlight.ui.widgets.recyclerview.BaseViewHolder;
-import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +25,8 @@ public interface MyFavCountryMvp {
 
         void insertCountry(@NonNull CountriesModel country);
 
+        void onReceivedMyFavCountries(@NonNull List<CountriesModel> models);
+
         void onRemove(int position);
 
         void onShowProgress();
@@ -39,12 +40,13 @@ public interface MyFavCountryMvp {
         void onError(@StringRes int resId);
     }
 
-    interface Presenter extends DatabaseReference.CompletionListener,
-            BaseViewHolder.OnItemClickListener<CountriesModel>, AdapterView.OnItemClickListener {
+    interface Presenter extends BaseViewHolder.OnItemClickListener<CountriesModel>, AdapterView.OnItemClickListener {
         void onSelectedCountry(ArrayList<CountriesModel> myFavList, List<CountriesModel> countries, @Nullable CountriesModel country);
 
         void onSubmit(@NonNull List<CountriesModel> selectedCountries);
 
         boolean canAddCountry(@NonNull List<CountriesModel> myFavs);
+
+        void onGetMyFavCountries();
     }
 }

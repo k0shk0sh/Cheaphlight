@@ -2,7 +2,6 @@ package com.fastaccess.cheaphlight.ui.modules.security.view;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
@@ -10,7 +9,6 @@ import android.view.View;
 
 import com.facebook.login.widget.LoginButton;
 import com.fastaccess.cheaphlight.R;
-import com.fastaccess.cheaphlight.provider.Analytics;
 import com.fastaccess.cheaphlight.ui.base.BaseActivity;
 import com.fastaccess.cheaphlight.ui.modules.security.model.LoginMvp;
 import com.fastaccess.cheaphlight.ui.modules.security.presenter.LoginPresenter;
@@ -37,7 +35,6 @@ public class LoginView extends BaseActivity implements LoginMvp.View {
     private LoginPresenter presenter;
 
     @OnClick({R.id.googleLogin, R.id.facebookLogin, R.id.skip}) void onClick(View view) {
-        Analytics.logEvent(view.getId(), view.getTag(), view.getClass());
         switch (view.getId()) {
             case R.id.googleLogin:
                 getPresenter().onGoogleLogin(this);
@@ -65,10 +62,6 @@ public class LoginView extends BaseActivity implements LoginMvp.View {
 
     @Override protected boolean isSecured() {
         return true;
-    }
-
-    @Override protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -123,8 +116,8 @@ public class LoginView extends BaseActivity implements LoginMvp.View {
     }
 
     @Override protected void onStop() {
+        getPresenter().onDestroy();
         super.onStop();
-        getPresenter().onStop();
     }
 
     public LoginPresenter getPresenter() {

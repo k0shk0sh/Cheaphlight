@@ -1,5 +1,6 @@
 package com.fastaccess.cheaphlight.ui.base;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -28,6 +29,14 @@ public abstract class BaseFragment extends Fragment {
     protected abstract boolean isRetainRequired();
 
     protected abstract void onFragmentCreated(View view, @Nullable Bundle savedInstanceState);
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override public void onDetach() {
+        super.onDetach();
+    }
 
     @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -66,10 +75,15 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void showMessage(String resId) {
+        if (!isSafe()) return;
         if (getView() != null) {
             Snackbar.make(getView(), resId, Snackbar.LENGTH_LONG).show();
         } else {
             Toast.makeText(getContext(), resId, Toast.LENGTH_LONG).show();
         }
+    }
+
+    protected boolean isSafe() {
+        return isAdded() && !isDetached() && getActivity() != null && !getActivity().isFinishing();
     }
 }

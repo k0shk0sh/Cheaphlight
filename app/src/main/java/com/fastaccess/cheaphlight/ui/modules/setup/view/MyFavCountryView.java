@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import com.fastaccess.cheaphlight.R;
 import com.fastaccess.cheaphlight.data.model.CountriesModel;
 import com.fastaccess.cheaphlight.helper.AnimHelper;
-import com.fastaccess.cheaphlight.provider.Analytics;
 import com.fastaccess.cheaphlight.ui.base.BaseFragment;
 import com.fastaccess.cheaphlight.ui.modules.setup.adapter.MyCountriesAdapter;
 import com.fastaccess.cheaphlight.ui.modules.setup.model.MyFavCountryMvp;
@@ -54,6 +53,7 @@ public class MyFavCountryView extends BaseFragment implements MyFavCountryMvp.Vi
 
     @Override public void onDetach() {
         super.onDetach();
+        getPresenter().onDestroy();
         view = null;
     }
 
@@ -71,10 +71,10 @@ public class MyFavCountryView extends BaseFragment implements MyFavCountryMvp.Vi
         adapter = new MyCountriesAdapter(myFavList, getPresenter());
         recycler.setAdapter(adapter);
         country.setOnItemClickListener(getPresenter());
+        getPresenter().onGetMyFavCountries();
     }
 
-    @OnClick(R.id.next) public void onClick(View view) {
-        Analytics.logEvent(view.getId(), view.getTag(), view.getClass());
+    @OnClick(R.id.next) public void onClick() {
         getPresenter().onSubmit(myFavList);
     }
 
@@ -93,6 +93,10 @@ public class MyFavCountryView extends BaseFragment implements MyFavCountryMvp.Vi
     @Override public void insertCountry(@NonNull CountriesModel country) {
         adapter.addItem(country);
         this.country.setText("");
+    }
+
+    @Override public void onReceivedMyFavCountries(@NonNull List<CountriesModel> models) {
+        adapter.insertItems(models);
     }
 
     @Override public void onRemove(int position) {

@@ -8,33 +8,39 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by Kosh on 29 May 2016, 5:09 AM
  */
 
 public class FirebaseHelper {
 
-    public static void removeCompletionListener(@NonNull DatabaseReference.CompletionListener listener) {
+    public static void removeEventListener(@NonNull DatabaseReference reference, @NonNull ValueEventListener listener) {
         try {
-            App.getInstance().getFirebaseDatabase().getReference().removeValue(listener);
+            reference.removeEventListener(listener);
         } catch (Exception ignored) {}
     }
 
-    public static void removeEventListener(@NonNull ValueEventListener listener) {
+    public static void removeChildListener(@NonNull DatabaseReference reference, @NonNull ChildEventListener listener) {
         try {
-            App.getInstance().getFirebaseDatabase().getReference().removeEventListener(listener);
+            reference.removeEventListener(listener);
         } catch (Exception ignored) {}
     }
 
-    public static void removeChildListener(@NonNull ChildEventListener listener) {
+    public static void removeAuthListener(@NonNull FirebaseAuth auth, @NonNull FirebaseAuth.AuthStateListener listener) {
         try {
-            App.getInstance().getFirebaseDatabase().getReference().removeEventListener(listener);
+            auth.removeAuthStateListener(listener);
         } catch (Exception ignored) {}
     }
 
-    public static void removeAuthListener(@NonNull FirebaseAuth.AuthStateListener listener) {
-        try {
-            App.getInstance().getFirebaseAuth().removeAuthStateListener(listener);
-        } catch (Exception ignored) {}
+    public static <T> T getObject(String json, Class<T> clazz) {
+        return App.gson().fromJson(json, clazz);
     }
+
+    public static <T> List<T> getList(String json, Class<T[]> clazz) {
+        return Arrays.asList(App.gson().fromJson(json, clazz));
+    }
+
 }

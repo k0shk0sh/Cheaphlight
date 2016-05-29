@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
+import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateInterpolator;
@@ -14,7 +15,8 @@ import android.view.animation.AccelerateInterpolator;
 
 public class AnimHelper {
 
-    @UiThread public static void animateVisibityWithTranslate(final boolean show, @NonNull final View view) {
+    @UiThread public static void animateVisibityWithTranslate(final boolean show, final View view) {
+        if (view == null || !ViewCompat.isAttachedToWindow(view)) return;
         ViewPropertyAnimator animator = view.animate().alpha(show ? 1F : 0F).setInterpolator(new AccelerateInterpolator())
                 .setListener(new AnimatorListenerAdapter() {
                     @Override public void onAnimationStart(Animator animation) {

@@ -11,6 +11,7 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.fastaccess.cheaphlight.R;
+import com.fastaccess.cheaphlight.data.model.UserModel;
 import com.fastaccess.cheaphlight.helper.InputHelper;
 import com.fastaccess.cheaphlight.helper.Logger;
 import com.fastaccess.cheaphlight.helper.PrefConstance;
@@ -36,6 +37,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Map;
+
 /**
  * Created by Kosh on 26 May 2016, 6:50 PM
  */
@@ -44,7 +47,6 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
 
     private final static int GOOGLE_LOGIN_REQUEST_CODE = 1;
     private GoogleApiClient googleApiClient;
-    private FirebaseAuth mAuth;
     private CallbackManager callbackManager;
 
     private LoginPresenter(LoginMvp.View view) {
@@ -58,19 +60,14 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
     @Override public void onGoogleLogin(@NonNull Activity context) {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(getGoogleApiClient(context));
         context.startActivityForResult(signInIntent, GOOGLE_LOGIN_REQUEST_CODE);
-        Analytics.logActionEvent(Analytics.getCurrentMethodName());
+        Analytics.logEvent();
     }
 
     @Override public void onFacebookLogin(@NonNull LoginButton loginButton) {
         loginButton.setReadPermissions("email", "public_profile");
         loginButton.registerCallback(getCallbackManager(), this);
         loginButton.performClick();
-        Analytics.logActionEvent(Analytics.getCurrentMethodName());
-    }
-
-    @NonNull @Override public FirebaseAuth getFirebaseAuth() {
-        if (mAuth == null) mAuth = getApp().getFirebaseAuth();
-        return mAuth;
+        Analytics.logEvent();
     }
 
     @NonNull @Override public GoogleSignInOptions googleSignInOptions(@NonNull Context context) {
@@ -132,15 +129,11 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         getFirebaseAuth().addAuthStateListener(this);
     }
 
-    @Override public void onStop() {
-        getFirebaseAuth().removeAuthStateListener(this);
-    }
-
     @Override public void onFinish(@NonNull Activity activity) {
         PrefHelper.set(PrefConstance.SKIPPED_LOGIN, true);
         activity.startActivity(new Intent(activity, SetupPagerView.class));
         activity.finish();
-        Analytics.logActionEvent(Analytics.getCurrentMethodName());
+        Analytics.logEvent();
     }
 
     @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -159,15 +152,14 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
     @Override public void onComplete(@NonNull Task<AuthResult> task) {
         if (task.isSuccessful()) {
             FirebaseUser user = task.getResult().getUser();
-            FirebaseDatabase database = getApp().getFirebaseDatabase();
-            database.getReference("users")
-                    .child(user.getUid())
-                    .setValue(user, this);
+            Map<String, Object> userModel = UserModel.updateLastLogin();
+            FirebaseDatabase database = getFirebaseDatabase();
+            UserModel.getReference(database, user).updateChildren(userModel, this);
         } else {
             getView().hideProgress();
             getView().showMessage(R.string.login_fail);
         }
-        Analytics.logActionEvent(task.isSuccessful(), Analytics.getCurrentMethodName());
+        Analytics.logEvent();
     }
 
     @Override public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
@@ -178,7 +170,7 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         } else {
             getView().onSuccessfullyLoggedIn();
         }
-        Analytics.logActionEvent(databaseError == null, Analytics.getCurrentMethodName());
+        Analytics.logEvent();
     }
 
     @Override public void onSuccess(LoginResult loginResult) {

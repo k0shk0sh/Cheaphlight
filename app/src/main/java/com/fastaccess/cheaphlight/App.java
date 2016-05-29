@@ -8,8 +8,6 @@ import com.fastaccess.cheaphlight.helper.PrefHelper;
 import com.fastaccess.cheaphlight.helper.TypeFaceHelper;
 import com.fastaccess.cheaphlight.ui.modules.main.view.MainView;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -33,9 +31,6 @@ public class App extends Application {
     private static App instance;
 
     private ImageLoader imageLoader;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
     private FirebaseAnalytics firebaseAnalytics;
 
     @Override public void onCreate() {
@@ -47,6 +42,7 @@ public class App extends Application {
         CustomActivityOnCrash.setShowErrorDetails(DEBUG);
         CustomActivityOnCrash.install(this);
         FacebookSdk.sdkInitialize(getApplicationContext());
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 
     public static App getInstance() {
@@ -55,8 +51,8 @@ public class App extends Application {
 
     public static Gson gson() {
         return new GsonBuilder()
-                .setPrettyPrinting()
                 .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
+                .serializeNulls()
                 .create();
     }
 
@@ -95,24 +91,6 @@ public class App extends Application {
                 .showImageOnLoading(R.drawable.ic_plane_accent)
                 .showImageOnFail(R.drawable.ic_plane_red)
                 .build();
-    }
-
-    public FirebaseAuth getFirebaseAuth() {
-        if (firebaseAuth == null) firebaseAuth = FirebaseAuth.getInstance();
-        return firebaseAuth;
-    }
-
-    public FirebaseDatabase getFirebaseDatabase() {
-        if (firebaseDatabase == null) {
-            firebaseDatabase = FirebaseDatabase.getInstance();
-            firebaseDatabase.setPersistenceEnabled(true);
-        }
-        return firebaseDatabase;
-    }
-
-    public DatabaseReference getDatabaseReference() {
-        if (databaseReference == null) databaseReference = getFirebaseDatabase().getReference();
-        return databaseReference;
     }
 
     public FirebaseAnalytics getFirebaseAnalytics() {

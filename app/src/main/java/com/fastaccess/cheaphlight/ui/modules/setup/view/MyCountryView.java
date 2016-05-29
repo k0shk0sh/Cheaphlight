@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import com.fastaccess.cheaphlight.R;
 import com.fastaccess.cheaphlight.data.model.CountriesModel;
 import com.fastaccess.cheaphlight.helper.AnimHelper;
-import com.fastaccess.cheaphlight.provider.Analytics;
+import com.fastaccess.cheaphlight.helper.Logger;
 import com.fastaccess.cheaphlight.ui.base.BaseFragment;
 import com.fastaccess.cheaphlight.ui.modules.setup.model.MyCountryMvp;
 import com.fastaccess.cheaphlight.ui.modules.setup.model.SetupPagerMvp;
@@ -34,7 +34,7 @@ public class MyCountryView extends BaseFragment implements MyCountryMvp.View {
     @BindView(R.id.country) FontAutoCompleteEditText country;
     @BindView(R.id.progress) View progress;
     @BindView(R.id.next) ImageView next;
-    @State int selectionState = -1;
+    @State CountriesModel selectionState;
     private List<CountriesModel> countries;
     private SetupPagerMvp.View view;
     private MyCountryPresenter presenter;
@@ -50,6 +50,7 @@ public class MyCountryView extends BaseFragment implements MyCountryMvp.View {
 
     @Override public void onDetach() {
         super.onDetach();
+        getPresenter().onDestroy();
         view = null;
     }
 
@@ -66,23 +67,30 @@ public class MyCountryView extends BaseFragment implements MyCountryMvp.View {
         arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, countries);
         country.setAdapter(arrayAdapter);
         country.setOnItemClickListener(getPresenter());
+        getPresenter().onGetMyCountry();
     }
 
-    @OnClick(R.id.next) public void onClick(View view) {
-        Analytics.logEvent(view.getId(), view.getTag(), view.getClass());
-        if (selectionState == -1) {
+    @OnClick(R.id.next) public void onClick() {
+        if (selectionState == null) {
             showMessage(R.string.country_selection_error);
             return;
         }
-        getPresenter().onSelectedCountry(countries, countries.get(selectionState));
+        Logger.e(selectionState);
+        getPresenter().onSelectedCountry(countries, selectionState);
     }
 
     @Override public void onCountryTextError(@StringRes int resId) {
         country.setError(resId != 0 ? getString(resId) : null);
     }
 
-    @Override public void onSelectedAtPosition(int selectedPosition) {
-        this.selectionState = selectedPosition;
+    @Override public void onSelectedAtPosition(@NonNull CountriesModel selectionState) {
+        this.selectionState = selectionState;
+    }
+
+    @Override public void onMyCountryReceived(@NonNull CountriesModel model) {
+        onSelectedAtPosition(model);
+        country.setText(model.getCountryName());
+        country.dismissDropDown();
     }
 
     @Override public void onShowProgress() {

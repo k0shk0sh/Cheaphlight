@@ -6,7 +6,6 @@ import android.support.annotation.StringRes;
 import android.widget.AdapterView;
 
 import com.fastaccess.cheaphlight.data.model.CountriesModel;
-import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
 
@@ -20,7 +19,9 @@ public interface MyCountryMvp {
 
         void onCountryTextError(@StringRes int resId);
 
-        void onSelectedAtPosition(int selectedPosition);
+        void onSelectedAtPosition(@NonNull CountriesModel selectionState);
+
+        void onMyCountryReceived(@NonNull CountriesModel model);
 
         void onShowProgress();
 
@@ -33,9 +34,10 @@ public interface MyCountryMvp {
         void onError(@StringRes int resId);
     }
 
-    interface Presenter extends DatabaseReference.CompletionListener, AdapterView.OnItemClickListener {
+    interface Presenter extends AdapterView.OnItemClickListener {
 
         void onSelectedCountry(List<CountriesModel> countries, @Nullable CountriesModel country);
 
+        void onGetMyCountry();
     }
 }
