@@ -33,13 +33,13 @@ import icepick.State;
  */
 
 public class MyFavCountryView extends BaseFragment implements MyFavCountryMvp.View {
-    @BindView(R.id.next) ImageView next;
+    @BindView(R.id.done) ImageView done;
     @BindView(R.id.recycler) ResizeableRecyclerView recycler;
     @BindView(R.id.country) FontAutoCompleteEditText country;
     @BindView(R.id.progress) View progress;
     @State ArrayList<CountriesModel> myFavList = new ArrayList<>();
     private MyCountriesAdapter adapter;
-    private List<CountriesModel> countries;
+    private List<CountriesModel> countries = new ArrayList<>();
     private SetupPagerMvp.View view;
     private MyFavCountryPresenter presenter;
 
@@ -66,20 +66,24 @@ public class MyFavCountryView extends BaseFragment implements MyFavCountryMvp.Vi
     }
 
     @Override protected void onFragmentCreated(final View view, @Nullable Bundle savedInstanceState) {
-        countries = CountriesModel.getAllCountries();
-        country.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, countries));
         adapter = new MyCountriesAdapter(myFavList, getPresenter());
         recycler.setAdapter(adapter);
+        ArrayAdapter<CountriesModel> arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout
+                .simple_dropdown_item_1line, countries);
+        country.setAdapter(arrayAdapter);
+        getPresenter().onFillCountries(country, arrayAdapter, countries);
         country.setOnItemClickListener(getPresenter());
-        getPresenter().onGetMyFavCountries();
     }
 
-    @OnClick(R.id.next) public void onClick() {
+    @OnClick(R.id.done) public void onClick() {
         getPresenter().onSubmit(myFavList);
     }
 
-    public static Fragment getInstance() {
-        return new MyFavCountryView();
+    @Override public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            getPresenter().onGetMyFavCountries();
+        }
     }
 
     @Override public void onCountryTextError(@StringRes int resId) {
@@ -104,13 +108,13 @@ public class MyFavCountryView extends BaseFragment implements MyFavCountryMvp.Vi
     }
 
     @Override public void onShowProgress() {
-        AnimHelper.animateVisibityWithTranslate(false, next);
-        AnimHelper.animateVisibityWithTranslate(true, progress);
+        AnimHelper.animateVisibility(false, done);
+        AnimHelper.animateVisibility(true, progress);
     }
 
     @Override public void onHideProgress() {
-        AnimHelper.animateVisibityWithTranslate(false, progress);
-        AnimHelper.animateVisibityWithTranslate(true, next);
+        AnimHelper.animateVisibility(false, progress);
+        AnimHelper.animateVisibility(true, done);
     }
 
     @Override public void onSuccess() {
@@ -123,6 +127,10 @@ public class MyFavCountryView extends BaseFragment implements MyFavCountryMvp.Vi
 
     @Override public void onError(@StringRes int resId) {
         showMessage(resId);
+    }
+
+    public static Fragment getInstance() {
+        return new MyFavCountryView();
     }
 
     public MyFavCountryPresenter getPresenter() {

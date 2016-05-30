@@ -10,9 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.fastaccess.cheaphlight.App;
 import com.fastaccess.cheaphlight.BuildConfig;
 import com.fastaccess.cheaphlight.R;
 import com.fastaccess.cheaphlight.helper.AppHelper;
+import com.fastaccess.cheaphlight.helper.Logger;
 import com.fastaccess.cheaphlight.helper.PrefHelper;
 import com.fastaccess.cheaphlight.helper.ViewHelper;
 import com.fastaccess.cheaphlight.ui.modules.security.view.LoginView;
@@ -72,6 +74,15 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override protected void onDestroy() {
+        if (App.getInstance().getSubscriber().hasSubscriptions()) {
+            Logger.e("Before", App.getInstance().getSubscriber().hasSubscriptions());
+            App.getInstance().getSubscriber().unsubscribe();
+            Logger.e("After", App.getInstance().getSubscriber().hasSubscriptions());
+        }
+        super.onDestroy();
     }
 
     private void setupToolbarAndStatusBar() {

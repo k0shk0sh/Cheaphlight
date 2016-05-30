@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/appbar_elevation"/>
+        <include layout="@layout/appbar_search_elevation"/>
 
         <io.codetail.widget.RevealFrameLayout
             android:layout_width="match_parent"

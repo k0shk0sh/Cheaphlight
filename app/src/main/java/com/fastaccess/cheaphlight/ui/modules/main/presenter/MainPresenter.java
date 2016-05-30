@@ -83,6 +83,8 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
             FirebaseUser user = firebaseAuth.getCurrentUser();
             View header = navigationView.getHeaderView(0);
             getView().setupUserDetails(user, header);
+        } else {
+            navigationView.getMenu().findItem(R.id.logout).setTitle(R.string.login);
         }
     }
 

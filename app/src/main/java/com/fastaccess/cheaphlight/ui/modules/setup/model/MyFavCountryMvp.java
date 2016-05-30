@@ -4,8 +4,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.fastaccess.cheaphlight.data.model.CountriesModel;
+import com.fastaccess.cheaphlight.ui.widgets.FontAutoCompleteEditText;
 import com.fastaccess.cheaphlight.ui.widgets.recyclerview.BaseViewHolder;
 
 import java.util.ArrayList;
@@ -48,5 +50,7 @@ public interface MyFavCountryMvp {
         boolean canAddCountry(@NonNull List<CountriesModel> myFavs);
 
         void onGetMyFavCountries();
+
+        void onFillCountries(@NonNull FontAutoCompleteEditText country, @NonNull ArrayAdapter adapter, @NonNull List<CountriesModel> countries);
     }
 }

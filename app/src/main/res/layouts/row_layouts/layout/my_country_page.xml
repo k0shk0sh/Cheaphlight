@@ -56,6 +56,6 @@
         android:layout_width="@dimen/keyline_1"
         android:layout_height="@dimen/keyline_1"
         android:layout_gravity="bottom|center"
-        android:layout_margin="@dimen/spacing_s_large"
+        android:layout_margin="@dimen/spacing_xs_large"
         android:src="@drawable/checkable_next_drawable"/>
 </FrameLayout>

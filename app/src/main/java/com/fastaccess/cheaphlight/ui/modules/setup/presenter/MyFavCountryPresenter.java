@@ -4,16 +4,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
+import com.fastaccess.cheaphlight.App;
 import com.fastaccess.cheaphlight.R;
 import com.fastaccess.cheaphlight.data.model.CountriesModel;
 import com.fastaccess.cheaphlight.data.model.UserModel;
 import com.fastaccess.cheaphlight.helper.FirebaseHelper;
 import com.fastaccess.cheaphlight.helper.InputHelper;
-import com.fastaccess.cheaphlight.helper.Logger;
+import com.fastaccess.cheaphlight.helper.PrefConstance;
+import com.fastaccess.cheaphlight.helper.PrefHelper;
 import com.fastaccess.cheaphlight.provider.Analytics;
 import com.fastaccess.cheaphlight.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.cheaphlight.ui.modules.setup.model.MyFavCountryMvp;
+import com.fastaccess.cheaphlight.ui.widgets.FontAutoCompleteEditText;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,6 +26,10 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import rx.functions.Action1;
+
+import static com.fastaccess.cheaphlight.data.model.CountriesModel.getCountries;
 
 /**
  * Created by Kosh on 29 May 2016, 1:56 AM
@@ -87,6 +95,19 @@ public class MyFavCountryPresenter extends BasePresenter<MyFavCountryMvp.View> i
         }
     }
 
+    @Override
+    public void onFillCountries(@NonNull FontAutoCompleteEditText country, @NonNull final ArrayAdapter adapter, @NonNull final List<CountriesModel>
+            countries) {
+        App.getInstance().getSubscriber()
+                .add(getCountries()
+                        .doOnNext(new Action1<List<CountriesModel>>() {
+                            @Override public void call(List<CountriesModel> models) {
+                                countries.addAll(models);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }).subscribe());
+    }
+
     @Override public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
         getView().onHideProgress();
         if (databaseError != null) {
@@ -112,9 +133,11 @@ public class MyFavCountryPresenter extends BasePresenter<MyFavCountryMvp.View> i
     @Override public void onDataChange(DataSnapshot dataSnapshot) {
         getView().onHideProgress();
         if (dataSnapshot == null || dataSnapshot.getValue() == null) return;
-        Logger.e(dataSnapshot.getValue());
         List<CountriesModel> models = FirebaseHelper.getList(dataSnapshot.getValue().toString(), CountriesModel[].class);
-        if (!models.isEmpty()) getView().onReceivedMyFavCountries(models);
+        if (!models.isEmpty()) {
+            PrefHelper.set(PrefConstance.MY_FAV_COUNTRIES, models);
+            getView().onReceivedMyFavCountries(models);
+        }
     }
 
     @Override public void onCancelled(DatabaseError databaseError) {

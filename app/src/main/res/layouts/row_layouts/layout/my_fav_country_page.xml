@@ -54,7 +54,7 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/spacing_s_large"
+            android:layout_margin="@dimen/spacing_xs_large"
             app:layoutManager="@string/staggered_layout_manager"
             app:reverseLayout="false"
             app:spanCount="2"
@@ -68,12 +68,12 @@
             android:visibility="gone"/>
 
         <ImageView
-            android:id="@+id/next"
+            android:id="@+id/done"
             android:layout_width="@dimen/keyline_1"
             android:layout_height="@dimen/keyline_1"
             android:layout_gravity="bottom|center"
-            android:layout_margin="@dimen/spacing_s_large"
-            android:src="@drawable/checkable_next_drawable"/>
+            android:layout_margin="@dimen/spacing_xs_large"
+            android:src="@drawable/checkable_drawable"/>
 
     </FrameLayout>
 </LinearLayout>

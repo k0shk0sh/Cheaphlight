@@ -43,7 +43,7 @@ public class LoginView extends BaseActivity implements LoginMvp.View {
                 getPresenter().onFacebookLogin(facebookButton);
                 break;
             case R.id.skip:
-                getPresenter().onFinish(this);
+                getPresenter().onFinish(this, true);
                 break;
         }
     }
@@ -107,7 +107,7 @@ public class LoginView extends BaseActivity implements LoginMvp.View {
     }
 
     @Override public void onSuccessfullyLoggedIn() {
-        getPresenter().onFinish(this);
+        getPresenter().onFinish(this, false);
     }
 
     @Override protected void onStart() {

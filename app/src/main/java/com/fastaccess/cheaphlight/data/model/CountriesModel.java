@@ -3,9 +3,13 @@ package com.fastaccess.cheaphlight.data.model;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fastaccess.cheaphlight.App;
 import com.fastaccess.cheaphlight.R;
+import com.fastaccess.cheaphlight.helper.PrefConstance;
+import com.fastaccess.cheaphlight.helper.PrefHelper;
 import com.google.firebase.database.Exclude;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -19,6 +23,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 /**
  * Created by Kosh on 29 May 2016, 3:26 AM
  */
@@ -31,7 +39,7 @@ public class CountriesModel implements Parcelable {
     private String capital;
     private String continentName;
     private String continent;
-    @Exclude private static List<CountriesModel> allCountries;
+    @Exclude private static List<CountriesModel> allCountries = new ArrayList<>();
 
     public String getCountryCode() { return countryCode;}
 
@@ -80,17 +88,31 @@ public class CountriesModel implements Parcelable {
     /**
      * @return all parsed countries, reason for not passing context, is that the list will only be loaded once and then retained its state.
      */
-    public static List<CountriesModel> getAllCountries() {
+    @NonNull private static List<CountriesModel> getAllCountries() {
         if (allCountries == null || allCountries.isEmpty()) {
             Context context = App.getInstance().getApplicationContext();
             InputStream raw = context.getResources().openRawResource(R.raw.countries);
             Reader rd = new BufferedReader(new InputStreamReader(raw));
             Gson gson = App.gson();
             Type listType = new TypeToken<ArrayList<CountriesModel>>() {}.getType();
-            allCountries = new ArrayList<>();
-            allCountries.addAll((Collection<? extends CountriesModel>) gson.fromJson(rd, listType));
+            allCountries.addAll(gson.<Collection<? extends CountriesModel>>fromJson(rd, listType));
         }
         return allCountries;
+    }
+
+    public static Observable<List<CountriesModel>> getCountries() {
+        return Observable.just(getAllCountries())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .cache();
+    }
+
+    @Nullable public static List<CountriesModel> getMyLocalCountries() {
+        return PrefHelper.getJsonArray(PrefConstance.MY_FAV_COUNTRIES, CountriesModel[].class);
+    }
+
+    @Nullable public static CountriesModel getMyLocalCountry() {
+        return PrefHelper.getJsonObject(PrefConstance.MY_COUNTRY, CountriesModel.class);
     }
 
     @Override public int describeContents() { return 0; }

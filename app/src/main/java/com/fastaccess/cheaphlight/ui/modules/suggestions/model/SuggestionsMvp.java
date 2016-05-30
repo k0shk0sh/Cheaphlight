@@ -1,5 +1,6 @@
 package com.fastaccess.cheaphlight.ui.modules.suggestions.model;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -29,6 +30,8 @@ public interface SuggestionsMvp {
     }
 
     interface Presenter extends SwipeRefreshLayout.OnRefreshListener {
+
+        void login(@NonNull Activity activity);
 
         void onReload();
 

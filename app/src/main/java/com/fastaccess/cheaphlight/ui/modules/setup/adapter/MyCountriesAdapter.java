@@ -28,7 +28,8 @@ public class MyCountriesAdapter extends BaseRecyclerAdapter<CountriesModel, Coun
         return new CountriesHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.county_row_item, parent, false), this);
     }
 
-    @Override public void onBindViewHolder(CountriesHolder holder, int position) {
+    @Override protected void onBindView(CountriesHolder holder, int position) {
         holder.countryName.setText(getItem(position).getCountryName());
     }
+
 }

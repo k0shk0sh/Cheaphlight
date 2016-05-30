@@ -4,8 +4,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import com.fastaccess.cheaphlight.data.model.CountriesModel;
+import com.fastaccess.cheaphlight.ui.widgets.FontAutoCompleteEditText;
 
 import java.util.List;
 
@@ -37,6 +39,9 @@ public interface MyCountryMvp {
     interface Presenter extends AdapterView.OnItemClickListener {
 
         void onSelectedCountry(List<CountriesModel> countries, @Nullable CountriesModel country);
+
+        void onFillCountries(@NonNull FontAutoCompleteEditText country, @NonNull final ArrayAdapter adapter, @NonNull final List<CountriesModel>
+                countries);
 
         void onGetMyCountry();
     }

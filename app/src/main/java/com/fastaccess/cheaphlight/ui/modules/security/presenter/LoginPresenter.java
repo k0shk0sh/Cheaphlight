@@ -18,6 +18,7 @@ import com.fastaccess.cheaphlight.helper.PrefConstance;
 import com.fastaccess.cheaphlight.helper.PrefHelper;
 import com.fastaccess.cheaphlight.provider.Analytics;
 import com.fastaccess.cheaphlight.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.cheaphlight.ui.modules.main.view.MainView;
 import com.fastaccess.cheaphlight.ui.modules.security.model.LoginMvp;
 import com.fastaccess.cheaphlight.ui.modules.setup.view.SetupPagerView;
 import com.google.android.gms.auth.api.Auth;
@@ -129,11 +130,17 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         getFirebaseAuth().addAuthStateListener(this);
     }
 
-    @Override public void onFinish(@NonNull Activity activity) {
+    @Override public void onFinish(@NonNull Activity activity, boolean isSkipped) {
         PrefHelper.set(PrefConstance.SKIPPED_LOGIN, true);
-        activity.startActivity(new Intent(activity, SetupPagerView.class));
-        activity.finish();
-        Analytics.logEvent();
+        if (!isSkipped) {
+            activity.startActivity(new Intent(activity, SetupPagerView.class));
+            activity.finish();
+            Analytics.logEvent();
+        } else {
+            activity.startActivity(new Intent(activity, MainView.class));
+            activity.finish();
+            Analytics.logEvent();
+        }
     }
 
     @Override public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {

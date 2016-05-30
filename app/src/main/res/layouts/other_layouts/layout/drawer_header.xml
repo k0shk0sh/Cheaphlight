@@ -15,10 +15,10 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_gravity="start"
-        android:layout_marginBottom="@dimen/spacing_s_large"
+        android:layout_marginBottom="@dimen/spacing_xs_large"
+        android:src="@mipmap/ic_launcher"
         app:civ_border_color="?colorPrimaryDark"
-        app:civ_border_width="2dp"
-        tools:src="@mipmap/ic_launcher"/>
+        app:civ_border_width="2dp"/>
 
 
     <com.fastaccess.cheaphlight.ui.widgets.FontTextView
@@ -26,8 +26,8 @@
         style="@style/TextAppearance.AppCompat.Large.Inverse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        tools:text="Kosh"/>
+        android:text="@string/app_name"
+        android:textColor="@color/white"/>
 
     <com.fastaccess.cheaphlight.ui.widgets.FontTextView
         android:id="@+id/email"

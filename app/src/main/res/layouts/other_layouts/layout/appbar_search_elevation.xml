@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.AppBarLayout
+    android:id="@+id/appbar"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:theme="@style/ToolbarStyle"
+    app:elevation="0dp">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="?colorPrimary"
+        app:layout_scrollFlags="scroll|enterAlways"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="?colorPrimary">
+
+        <ImageView
+            android:id="@+id/searchIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
+            android:paddingStart="@dimen/spacing_xs_large"
+            android:src="@drawable/ic_search"/>
+
+        <com.fastaccess.cheaphlight.ui.widgets.FontEditText
+            android:id="@+id/searchEditText"
+            style="@style/TextAppearance.AppCompat.Medium.Inverse"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:hint="@string/airport_name_city_state_country"
+            android:imeOptions="actionSearch"
+            android:paddingEnd="@dimen/spacing_s_large"
+            android:paddingStart="@dimen/spacing_s_large"
+            android:singleLine="true"/>
+
+        <ImageView
+            android:id="@+id/clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
+            android:paddingEnd="@dimen/spacing_xs_large"
+            android:src="@drawable/ic_clear"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/toolbar_shadow"/>
+</android.support.design.widget.AppBarLayout>

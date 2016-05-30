@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.fastaccess.cheaphlight.helper.AnimHelper;
+
 import java.util.List;
 
 /**
@@ -15,6 +17,8 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseViewHolder,
 
     @NonNull private List<T> data;
     @Nullable public P listener;
+    private int lastKnowingPosition = -1;
+    private boolean enableAnimation = true;
 
     public BaseRecyclerAdapter(@NonNull List<T> data) {
         this(data, null);
@@ -26,6 +30,8 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseViewHolder,
     }
 
     protected abstract VH viewHolder(ViewGroup parent, int viewType);
+
+    protected abstract void onBindView(VH holder, int position);
 
     @NonNull public List<T> getData() {
         return data;
@@ -39,8 +45,21 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseViewHolder,
         return viewHolder(parent, viewType);
     }
 
+    @Override public void onBindViewHolder(VH holder, int position) {
+        animate(holder);
+        onBindView(holder, position);
+    }
+
     @Override public int getItemCount() {
         return data.size();
+    }
+
+    private void animate(VH holder) {
+        int position = holder.getLayoutPosition();
+        if (isEnableAnimation() && position > lastKnowingPosition) {
+            AnimHelper.startBeatsAnimation(holder.itemView);
+            lastKnowingPosition = position;
+        }
     }
 
     public void insertItems(List<T> items) {
@@ -83,5 +102,14 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseViewHolder,
     public void clear() {
         data.clear();
         notifyItemRangeRemoved(0, getItemCount());
+    }
+
+    public void setEnableAnimation(boolean enableAnimation) {
+        this.enableAnimation = enableAnimation;
+        notifyDataSetChanged();
+    }
+
+    public boolean isEnableAnimation() {
+        return enableAnimation;
     }
 }

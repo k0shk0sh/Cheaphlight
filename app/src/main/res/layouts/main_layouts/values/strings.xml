@@ -30,4 +30,8 @@
     <string name="reload">Reload</string>
     <string name="network_error">No Internet Connection</string>
     <string name="no_data">No Data.</string>
+    <string name="login">Login</string>
+    <string name="login_for_suggestions">Please login, to show you some suggestions.</string>
+    <string name="search">Search</string>
+    <string name="airport_name_city_state_country">Airport, City, State, Country</string>
 </resources>

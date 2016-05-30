@@ -19,6 +19,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import java.lang.reflect.Modifier;
 
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
+import rx.subscriptions.CompositeSubscription;
 
 import static com.fastaccess.cheaphlight.BuildConfig.DEBUG;
 
@@ -32,6 +33,7 @@ public class App extends Application {
 
     private ImageLoader imageLoader;
     private FirebaseAnalytics firebaseAnalytics;
+    private CompositeSubscription subscriber;
 
     @Override public void onCreate() {
         super.onCreate();
@@ -98,5 +100,12 @@ public class App extends Application {
             firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         }
         return firebaseAnalytics;
+    }
+
+    public CompositeSubscription getSubscriber() {
+        if (subscriber == null) {
+            subscriber = new CompositeSubscription();
+        }
+        return subscriber;
     }
 }

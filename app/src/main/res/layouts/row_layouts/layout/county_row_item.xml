@@ -16,6 +16,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:padding="@dimen/spacing_s_large"
+        android:padding="@dimen/spacing_xs_large"
         tools:text="Libya"/>
 </android.support.v7.widget.CardView>

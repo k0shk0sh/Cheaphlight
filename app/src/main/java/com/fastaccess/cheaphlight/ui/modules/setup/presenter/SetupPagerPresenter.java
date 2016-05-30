@@ -27,13 +27,13 @@ public class SetupPagerPresenter extends BasePresenter<SetupPagerMvp.View> imple
     }
 
     @Override public void initializePager(@NonNull SetupPagerView pagerView, @NonNull ViewPager pager) {
-        pager.setOffscreenPageLimit(1);
+        pager.setOffscreenPageLimit(2);
         pager.setAdapter(new SetupPagerAdapter(pagerView.getSupportFragmentManager()));
         pager.setPageTransformer(true, new SetupTransformer());
     }
 
     @Override public void onNext(@NonNull ViewPager pager) {
-        pager.setCurrentItem(pager.getCurrentItem() + 1);
+        pager.setCurrentItem(pager.getCurrentItem() + 1, true);
     }
 
     @Override public void onFinish(@NonNull Activity context) {

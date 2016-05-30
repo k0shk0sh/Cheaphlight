@@ -20,6 +20,7 @@ import com.fastaccess.cheaphlight.ui.modules.setup.model.SetupPagerMvp;
 import com.fastaccess.cheaphlight.ui.modules.setup.presenter.MyCountryPresenter;
 import com.fastaccess.cheaphlight.ui.widgets.FontAutoCompleteEditText;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,10 +36,9 @@ public class MyCountryView extends BaseFragment implements MyCountryMvp.View {
     @BindView(R.id.progress) View progress;
     @BindView(R.id.next) ImageView next;
     @State CountriesModel selectionState;
-    private List<CountriesModel> countries;
+    private List<CountriesModel> countries = new ArrayList<>();
     private SetupPagerMvp.View view;
     private MyCountryPresenter presenter;
-    private ArrayAdapter arrayAdapter;
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
@@ -63,9 +63,9 @@ public class MyCountryView extends BaseFragment implements MyCountryMvp.View {
     }
 
     @Override protected void onFragmentCreated(View view, @Nullable Bundle savedInstanceState) {
-        countries = CountriesModel.getAllCountries();
-        arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, countries);
+        ArrayAdapter arrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, countries);
         country.setAdapter(arrayAdapter);
+        getPresenter().onFillCountries(country, arrayAdapter, countries);
         country.setOnItemClickListener(getPresenter());
         getPresenter().onGetMyCountry();
     }
@@ -94,13 +94,13 @@ public class MyCountryView extends BaseFragment implements MyCountryMvp.View {
     }
 
     @Override public void onShowProgress() {
-        AnimHelper.animateVisibityWithTranslate(false, next);
-        AnimHelper.animateVisibityWithTranslate(true, progress);
+//        AnimHelper.animateVisibility(false, next);
+        AnimHelper.animateVisibility(true, progress);
     }
 
     @Override public void onHideProgress() {
-        AnimHelper.animateVisibityWithTranslate(false, progress);
-        AnimHelper.animateVisibityWithTranslate(true, next);
+        AnimHelper.animateVisibility(false, progress);
+//        AnimHelper.animateVisibility(true, next);
     }
 
     @Override public void onSuccess() {

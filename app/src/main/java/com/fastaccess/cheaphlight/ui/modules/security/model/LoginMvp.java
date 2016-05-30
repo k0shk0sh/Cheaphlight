@@ -56,7 +56,7 @@ public interface LoginMvp {
 
         void onStart();
 
-        void onFinish(@NonNull Activity activity);
+        void onFinish(@NonNull Activity activity, boolean isSkipped);
     }
 
 }

@@ -61,9 +61,6 @@ public class DynamicRecyclerView extends RecyclerView {
                     show(true);
                 }
             }
-        } else {
-            Logger.e("Null");
-            show(false);
         }
 
     }
@@ -78,11 +75,11 @@ public class DynamicRecyclerView extends RecyclerView {
 
     private void show(boolean show) {
         if (parentView == null) {
-            AnimHelper.animateVisibityWithTranslate(show, this);
+            AnimHelper.animateVisibility(show, this);
         } else {
-            AnimHelper.animateVisibityWithTranslate(show, parentView);
+            AnimHelper.animateVisibility(show, parentView);
         }
-        AnimHelper.animateVisibityWithTranslate(!show, emptyView);
+        AnimHelper.animateVisibility(!show, emptyView);
         Logger.e(show);
     }
 
@@ -94,11 +91,11 @@ public class DynamicRecyclerView extends RecyclerView {
 
     public void hideProgress(View view) {
         if (!view.isShown()) return;
-        AnimHelper.animateVisibityWithTranslate(false, view);
+        AnimHelper.animateVisibility(false, view);
     }
 
     public void showProgress(View view) {
         if (view.isShown()) return;
-        AnimHelper.animateVisibityWithTranslate(true, view);
+        AnimHelper.animateVisibility(true, view);
     }
 }
