@@ -1,15 +1,12 @@
 package com.fastaccess.cheaphlight.ui.modules.main.presenter;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -73,20 +70,11 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
         }
     }
 
-    @Override public void logout(@NonNull final Context context) {
-        new AlertDialog.Builder(context)
-                .setTitle(R.string.logout)
-                .setMessage(R.string.confirm_message)
-                .setNegativeButton(R.string.cancel, null)
-                .setPositiveButton(R.string.logout, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialog, int which) {
-                        FirebaseAuth.getInstance().signOut();
-                        PrefHelper.set(PrefConstance.SKIPPED_LOGIN, false);
-                        context.startActivity(new Intent(context, LoginView.class));
-                        ((Activity) context).finish();
-                    }
-                })
-                .show();
+    @Override public void logout(@NonNull final Activity context) {
+        getFirebaseAuth().signOut();
+        PrefHelper.set(PrefConstance.SKIPPED_LOGIN, false);
+        context.startActivity(new Intent(context, LoginView.class));
+        context.finish();
     }
 
     @Override public void displayUserDetails(@NonNull NavigationView navigationView) {

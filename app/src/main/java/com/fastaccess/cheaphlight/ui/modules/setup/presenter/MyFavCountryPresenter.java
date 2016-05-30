@@ -82,8 +82,8 @@ public class MyFavCountryPresenter extends BasePresenter<MyFavCountryMvp.View> i
     @Override public void onGetMyFavCountries() {
         FirebaseUser user = getUser();
         if (user != null) {
-            UserModel.getReference(getFirebaseDatabase(), user).child("myFavCountries").addValueEventListener(this);
             getView().onShowProgress();
+            UserModel.getReference(getFirebaseDatabase(), user).child("myFavCountries").addValueEventListener(this);
         }
     }
 

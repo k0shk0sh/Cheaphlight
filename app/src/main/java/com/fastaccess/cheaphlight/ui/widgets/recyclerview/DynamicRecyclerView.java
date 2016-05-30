@@ -53,13 +53,16 @@ public class DynamicRecyclerView extends RecyclerView {
 
     public void showEmptyView() {
         Adapter<?> adapter = getAdapter();
-        if (adapter != null && emptyView != null) {
-            if (adapter.getItemCount() == 0) {
-                show(false);
-            } else {
-                show(true);
+        if (adapter != null) {
+            if (emptyView != null) {
+                if (adapter.getItemCount() == 0) {
+                    show(false);
+                } else {
+                    show(true);
+                }
             }
         } else {
+            Logger.e("Null");
             show(false);
         }
 

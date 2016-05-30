@@ -1,6 +1,6 @@
 package com.fastaccess.cheaphlight.ui.modules.main.model;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -43,6 +43,6 @@ public interface MainMvp {
 
         void navigateTo(@NonNull FragmentManager manager, @NavigationMode int mode);
 
-        void logout(@NonNull Context context);
+        void logout(@NonNull Activity context);
     }
 }

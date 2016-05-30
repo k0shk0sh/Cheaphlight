@@ -1,11 +1,13 @@
 package com.fastaccess.cheaphlight.ui.modules.main.view;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -79,7 +81,16 @@ public class MainView extends BaseActivity implements MainMvp.View {
     }
 
     @Override public void logout() {
-        getPresenter().logout(this);
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.logout)
+                .setMessage(R.string.confirm_message)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.logout, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        getPresenter().logout(MainView.this);
+                    }
+                })
+                .show();
     }
 
     @Override public void onBackPressed() {
